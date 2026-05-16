@@ -69,7 +69,7 @@
       <div class="logo-text"><h1>NOOR-E-ISLAM</h1><p>نورِ اسلام — اسلامی پورٹل</p></div>
     </div>
     <div class="header-info">
-      <div class="info-item">🗓️ <span>۲۷ شوال ۱۴۴۶ھ</span></div>
+      <div class="info-item">🗓️ <span id="hijri-today" class="hijri-today">۲۷ شوال ۱۴۴۶ھ</span></div>
       <div class="info-item">📅 <span id="gregorian-today"></span></div>
       <div class="info-item">🕐 <span id="current-time"></span></div>
     </div>
@@ -112,47 +112,47 @@
   <div class="countdown-box">
     <div class="countdown-label">⏰ اگلی نماز تک وقت باقی</div>
     <div class="countdown-time" id="countdown">02:45:18</div>
-    <div class="countdown-prayer">ظہر کی نماز — 12:18</div>
+    <div class="countdown-prayer" id="countdown-prayer">لوڈ ہو رہا ہے...</div>
   </div>
 
   <!-- Prayer Cards -->
   <div class="prayer-big">
-    <div class="prayer-big-card">
+    <div class="prayer-big-card" id="card-fajr">
       <div class="prayer-icon">🌙</div>
       <div class="prayer-name-ar">الفجر</div>
       <div class="prayer-name-ur">فجر</div>
-      <div class="prayer-time-big">04:32</div>
+      <div class="prayer-time-big" id="fajr-time">--:--</div>
     </div>
-    <div class="prayer-big-card">
+    <div class="prayer-big-card" id="card-fajr">
       <div class="prayer-icon">🌅</div>
       <div class="prayer-name-ar">الشروق</div>
       <div class="prayer-name-ur">سورج طلوع</div>
-      <div class="prayer-time-big">06:02</div>
+      <div class="prayer-time-big" id="sunrise-time">--:--</div>
     </div>
-    <div class="prayer-big-card next-prayer">
+    <div class="prayer-big-card" id="card-dhuhr">
       <div class="prayer-icon">☀️</div>
       <div class="prayer-name-ar">الظهر</div>
       <div class="prayer-name-ur">ظہر</div>
-      <div class="prayer-time-big">12:18</div>
-      <div><span class="next-badge">اگلی نماز</span></div>
+      <div class="prayer-time-big" id="dhuhr-time">--:--</div>
+      
     </div>
-    <div class="prayer-big-card">
+    <div class="prayer-big-card" id="card-fajr">
       <div class="prayer-icon">🌤️</div>
       <div class="prayer-name-ar">العصر</div>
       <div class="prayer-name-ur">عصر</div>
-      <div class="prayer-time-big">15:45</div>
+      <div class="prayer-time-big" id="asr-time">--:--</div>
     </div>
-    <div class="prayer-big-card">
+    <div class="prayer-big-card" id="card-fajr">
       <div class="prayer-icon">🌆</div>
       <div class="prayer-name-ar">المغرب</div>
       <div class="prayer-name-ur">مغرب</div>
-      <div class="prayer-time-big">18:52</div>
+      <div class="prayer-time-big" id="maghrib-time">--:--</div>
     </div>
-    <div class="prayer-big-card">
+    <div class="prayer-big-card" id="card-fajr">
       <div class="prayer-icon">🌃</div>
       <div class="prayer-name-ar">العشاء</div>
       <div class="prayer-name-ur">عشاء</div>
-      <div class="prayer-time-big">20:15</div>
+      <div class="prayer-time-big" id="isha-time">--:--</div>
     </div>
   </div>
 
@@ -172,7 +172,7 @@
           <th>عشاء</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="weekly-tbody">
         <tr class="today-row">
           <td class="day-name">ہفتہ ⭐</td>
           <td>04:32</td><td>06:02</td><td>12:18</td><td>15:45</td><td>18:52</td><td>20:15</td>
