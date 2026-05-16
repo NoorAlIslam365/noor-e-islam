@@ -6,17 +6,64 @@
 <title>نورِ اسلام — احادیثِ مبارکہ</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .kitab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .kitab-card {
+    background: linear-gradient(135deg, rgba(29,67,50,0.4), rgba(13,27,18,0.6));
+    border: 1px solid rgba(201,168,76,0.2); border-radius: 14px;
+    padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .kitab-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+  .kitab-icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; }
+  .kitab-name-ar { font-family: 'Amiri', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 0.3rem; }
+  .kitab-name-ur { font-size: 0.9rem; color: var(--cream); margin-bottom: 0.3rem; }
+  .kitab-count { font-size: 0.75rem; color: rgba(253,246,227,0.4); }
+
+  .hadees-full-card {
+    background: linear-gradient(135deg, rgba(29,67,50,0.4), rgba(13,27,18,0.6));
+    border: 1px solid rgba(201,168,76,0.18); border-radius: 16px;
+    padding: 2rem; margin-bottom: 1.5rem; transition: all 0.3s;
+  }
+  .hadees-full-card:hover { border-color: rgba(201,168,76,0.4); }
+  .hadees-number {
+    display: inline-block; background: var(--gold); color: var(--dark);
+    font-size: 0.8rem; font-weight: 700; padding: 0.3rem 0.8rem;
+    border-radius: 20px; margin-bottom: 1rem; direction: ltr;
+  }
+  .hadees-arabic-text {
+    font-family: 'Amiri', serif; font-size: clamp(1.2rem,2.5vw,1.5rem);
+    line-height: 2.3; color: var(--gold-light); margin-bottom: 1.2rem;
+  }
+  .hadees-urdu-text {
+    font-size: 0.95rem; color: rgba(253,246,227,0.75); line-height: 2;
+    border-top: 1px solid rgba(201,168,76,0.1); padding-top: 1rem; margin-bottom: 1rem;
+  }
+  .hadees-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .hadees-ref { font-size: 0.8rem; color: rgba(253,246,227,0.4); }
+  .source-badge { background: linear-gradient(135deg,var(--gold-dark),var(--gold)); color: var(--dark); padding: 0.3rem 0.9rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+
+  .loading-box { text-align: center; padding: 3rem; color: var(--gold-light); font-family: 'Amiri', serif; font-size: 1.1rem; }
+  .loading-spinner { width: 45px; height: 45px; border: 3px solid rgba(201,168,76,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .back-btn { background: rgba(201,168,76,0.15); border: 1px solid var(--gold); color: var(--gold); padding: 0.6rem 1.5rem; border-radius: 25px; cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: all 0.3s; margin-bottom: 2rem; display: inline-block; }
+  .back-btn:hover { background: rgba(201,168,76,0.25); }
+
+  .pagination { display: flex; justify-content: center; gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap; }
+  .page-btn { background: rgba(29,67,50,0.3); border: 1px solid rgba(201,168,76,0.2); color: var(--cream); padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-family: inherit; transition: all 0.3s; }
+  .page-btn:hover, .page-btn.active { background: rgba(201,168,76,0.15); border-color: var(--gold); color: var(--gold); }
+  .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+</style>
 </head>
 <body>
 <div class="geo-bg"></div>
 <div class="geo-pattern"></div>
-
 <div class="ticker">
   <div class="ticker-inner">
     <span>📜 بلّغوا عنّی ولو آیۃ — میری طرف سے پہنچاؤ اگرچہ ایک آیت ہو</span>
-    <span>☪️ آج کی حدیث: مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں</span>
-    <span>📜 بلّغوا عنّی ولو آیۃ — میری طرف سے پہنچاؤ اگرچہ ایک آیت ہو</span>
-    <span>☪️ آج کی حدیث: مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں</span>
+    <span id="ticker-namaz">🕌 نماز اوقات لوڈ ہو رہے ہیں...</span>
+    <span>📜 احادیثِ مبارکہ — نبی کریم ﷺ کے فرمودات</span>
   </div>
 </div>
 
@@ -24,10 +71,7 @@
   <div class="header-top">
     <div class="logo-section">
       <div class="logo-icon">☪️</div>
-      <div class="logo-text">
-        <h1>NOOR-E-ISLAM</h1>
-        <p>نورِ اسلام — اسلامی پورٹل</p>
-      </div>
+      <div class="logo-text"><h1>NOOR-E-ISLAM</h1><p>نورِ اسلام — اسلامی پورٹل</p></div>
     </div>
     <div class="header-info">
       <div class="info-item">🗓️ <span id="hijri-today" class="hijri-today">...</span></div>
@@ -48,120 +92,202 @@
   </nav>
 </header>
 
-<div class="page-hero">
-  <div class="ar-title">الأحاديث النبوية</div>
-  <h1>احادیثِ مبارکہ</h1>
-  <p>نبی کریم ﷺ کے فرمودات — صحاح ستہ سے</p>
+<!-- BOOKS LIST -->
+<div id="books-view">
+  <div class="page-hero">
+    <div class="ar-title">الأحاديث النبوية</div>
+    <h1>احادیثِ مبارکہ</h1>
+    <p>کوئی بھی کتاب کھولیں — احادیث اردو ترجمہ کے ساتھ</p>
+  </div>
+
+  <section class="main-section">
+    <div class="section-title"><span class="ar">الكتب الستة</span><h2>صحاح ستہ</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+
+    <div class="kitab-grid">
+      <div class="kitab-card" onclick="openBook('bukhari','صحیح بخاری','Sahih al-Bukhari',7563)">
+        <span class="kitab-icon">📗</span>
+        <div class="kitab-name-ar">صحيح البخاري</div>
+        <div class="kitab-name-ur">صحیح بخاری</div>
+        <div class="kitab-count">۷۵۶۳ احادیث</div>
+      </div>
+      <div class="kitab-card" onclick="openBook('muslim','صحیح مسلم','Sahih Muslim',3033)">
+        <span class="kitab-icon">📘</span>
+        <div class="kitab-name-ar">صحيح مسلم</div>
+        <div class="kitab-name-ur">صحیح مسلم</div>
+        <div class="kitab-count">۳۰۳۳ احادیث</div>
+      </div>
+      <div class="kitab-card" onclick="openBook('tirmidhi','جامع ترمذی','Jami at-Tirmidhi',3956)">
+        <span class="kitab-icon">📙</span>
+        <div class="kitab-name-ar">جامع الترمذي</div>
+        <div class="kitab-name-ur">جامع ترمذی</div>
+        <div class="kitab-count">۳۹۵۶ احادیث</div>
+      </div>
+      <div class="kitab-card" onclick="openBook('abudawud','سنن ابو داؤد','Sunan Abu Dawud',5274)">
+        <span class="kitab-icon">📕</span>
+        <div class="kitab-name-ar">سنن أبي داود</div>
+        <div class="kitab-name-ur">سنن ابو داؤد</div>
+        <div class="kitab-count">۵۲۷۴ احادیث</div>
+      </div>
+      <div class="kitab-card" onclick="openBook('nasai','سنن نسائی','Sunan an-Nasai',5761)">
+        <span class="kitab-icon">📓</span>
+        <div class="kitab-name-ar">سنن النسائي</div>
+        <div class="kitab-name-ur">سنن نسائی</div>
+        <div class="kitab-count">۵۷۶۱ احادیث</div>
+      </div>
+      <div class="kitab-card" onclick="openBook('ibnmajah','سنن ابن ماجہ','Sunan Ibn Majah',4341)">
+        <span class="kitab-icon">📔</span>
+        <div class="kitab-name-ar">سنن ابن ماجه</div>
+        <div class="kitab-name-ur">سنن ابن ماجہ</div>
+        <div class="kitab-count">۴۳۴۱ احادیث</div>
+      </div>
+    </div>
+
+    <!-- Sample Hadees of Day -->
+    <div class="section-title" style="margin-top:2rem;"><span class="ar">حديث اليوم</span><h2>حدیثِ روز</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div class="hadees-full-card">
+      <span class="hadees-number">صحیح بخاری — ١</span>
+      <div class="hadees-arabic-text">إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى</div>
+      <div class="hadees-urdu-text">"اعمال کا دارومدار نیتوں پر ہے اور ہر شخص کو وہی ملے گا جس کی اس نے نیت کی"</div>
+      <div class="hadees-footer">
+        <span class="hadees-ref">حضرت عمر بن الخطاب رضی اللہ عنہ سے روایت</span>
+        <span class="source-badge">متفق علیہ</span>
+      </div>
+    </div>
+
+    <div class="hadees-full-card">
+      <span class="hadees-number">صحیح مسلم — ٤٥</span>
+      <div class="hadees-arabic-text">لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ</div>
+      <div class="hadees-urdu-text">"تم میں سے کوئی مومن نہیں ہو سکتا جب تک اپنے بھائی کے لیے وہی پسند نہ کرے جو اپنے لیے پسند کرتا ہے"</div>
+      <div class="hadees-footer">
+        <span class="hadees-ref">حضرت انس رضی اللہ عنہ سے روایت</span>
+        <span class="source-badge">صحیح مسلم</span>
+      </div>
+    </div>
+
+    <div class="hadees-full-card">
+      <span class="hadees-number">صحیح بخاری — ٦</span>
+      <div class="hadees-arabic-text">الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ</div>
+      <div class="hadees-urdu-text">"مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں"</div>
+      <div class="hadees-footer">
+        <span class="hadees-ref">حضرت عبداللہ بن عمرو رضی اللہ عنہ سے روایت</span>
+        <span class="source-badge">صحیح بخاری</span>
+      </div>
+    </div>
+  </section>
 </div>
 
-<section class="main-section">
-  <div class="search-bar" style="margin-bottom:2rem;">
-    <input type="text" placeholder="حدیث تلاش کریں...">
-    <button class="search-btn">🔍</button>
-  </div>
-
-  <!-- Kutub selection -->
-  <div class="content-tabs" style="justify-content:center; margin-bottom:2.5rem;">
-    <button class="tab-btn active">صحیح بخاری</button>
-    <button class="tab-btn">صحیح مسلم</button>
-    <button class="tab-btn">ترمذی</button>
-    <button class="tab-btn">ابو داؤد</button>
-    <button class="tab-btn">نسائی</button>
-    <button class="tab-btn">ابن ماجہ</button>
-  </div>
-
-  <!-- Hadees Cards -->
-  <div class="article-list">
-
-    <div class="hadees-card" style="margin-bottom:1.5rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <span class="source-badge">صحیح بخاری — ۱</span>
-        <span style="color:rgba(253,246,227,0.4); font-size:0.8rem;">حدیث نمبر: ۱</span>
-      </div>
-      <div class="hadees-text">إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى</div>
-      <div class="hadees-urdu">"اعمال کا دارومدار نیتوں پر ہے اور ہر شخص کو وہی ملے گا جس کی اس نے نیت کی"</div>
-      <div class="hadees-source">
-        <span class="hadees-narrator">حضرت عمر بن الخطاب رضی اللہ عنہ سے روایت</span>
-      </div>
+<!-- BOOK READER VIEW -->
+<div id="book-view" style="display:none;">
+  <section class="main-section">
+    <button class="back-btn" onclick="showBooks()">← واپس کتابوں کی فہرست</button>
+    <div class="section-title">
+      <span class="ar" id="book-ar-name">صحيح البخاري</span>
+      <h2 id="book-ur-name">صحیح بخاری</h2>
     </div>
-
-    <div class="hadees-card" style="margin-bottom:1.5rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <span class="source-badge">صحیح بخاری — ۲</span>
-        <span style="color:rgba(253,246,227,0.4); font-size:0.8rem;">حدیث نمبر: ۲</span>
-      </div>
-      <div class="hadees-text">الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ</div>
-      <div class="hadees-urdu">"مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں"</div>
-      <div class="hadees-source">
-        <span class="hadees-narrator">حضرت عبداللہ بن عمرو رضی اللہ عنہ سے روایت</span>
-      </div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div id="hadees-list">
+      <div class="loading-box"><div class="loading-spinner"></div>احادیث لوڈ ہو رہی ہیں...</div>
     </div>
-
-    <div class="hadees-card" style="margin-bottom:1.5rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <span class="source-badge">صحیح بخاری — ۳</span>
-        <span style="color:rgba(253,246,227,0.4); font-size:0.8rem;">حدیث نمبر: ۳</span>
-      </div>
-      <div class="hadees-text">مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ</div>
-      <div class="hadees-urdu">"جو شخص اللہ اور آخرت کے دن پر ایمان رکھتا ہو اسے چاہیے کہ اچھی بات کہے یا خاموش رہے"</div>
-      <div class="hadees-source">
-        <span class="hadees-narrator">حضرت ابوہریرہ رضی اللہ عنہ سے روایت</span>
-      </div>
-    </div>
-
-    <div class="hadees-card" style="margin-bottom:1.5rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <span class="source-badge">صحیح مسلم — ۱</span>
-        <span style="color:rgba(253,246,227,0.4); font-size:0.8rem;">حدیث نمبر: ۱۵۵</span>
-      </div>
-      <div class="hadees-text">لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ</div>
-      <div class="hadees-urdu">"تم میں سے کوئی مومن نہیں ہو سکتا جب تک اپنے بھائی کے لیے وہی پسند نہ کرے جو اپنے لیے پسند کرتا ہے"</div>
-      <div class="hadees-source">
-        <span class="hadees-narrator">حضرت انس رضی اللہ عنہ سے روایت</span>
-      </div>
-    </div>
-
-    <div class="hadees-card" style="margin-bottom:1.5rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <span class="source-badge">ترمذی</span>
-        <span style="color:rgba(253,246,227,0.4); font-size:0.8rem;">حدیث نمبر: ۲۰۴۶</span>
-      </div>
-      <div class="hadees-text">اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا</div>
-      <div class="hadees-urdu">"جہاں بھی ہو اللہ سے ڈرتے رہو، اور برائی کے بعد نیکی کرو، وہ اسے مٹا دے گی"</div>
-      <div class="hadees-source">
-        <span class="hadees-narrator">حضرت ابوذر رضی اللہ عنہ سے روایت</span>
-      </div>
-    </div>
-
-    <div class="hadees-card" style="margin-bottom:1.5rem;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <span class="source-badge">ابو داؤد</span>
-        <span style="color:rgba(253,246,227,0.4); font-size:0.8rem;">حدیث نمبر: ۴۸۰۲</span>
-      </div>
-      <div class="hadees-text">مَنْ لَا يَرْحَمُ النَّاسَ لَا يَرْحَمُهُ اللَّهُ</div>
-      <div class="hadees-urdu">"جو لوگوں پر رحم نہیں کرتا اللہ اس پر رحم نہیں کرتا"</div>
-      <div class="hadees-source">
-        <span class="hadees-narrator">حضرت جریر رضی اللہ عنہ سے روایت</span>
-      </div>
-    </div>
-
-  </div>
-  <button class="more-btn">مزید احادیث دیکھیں ←</button>
-</section>
+    <div class="pagination" id="pagination"></div>
+  </section>
+</div>
 
 <footer>
   <div class="footer-logo">☪️ نورِ اسلام</div>
   <p class="footer-tagline">اسلامی تعلیمات کی روشنی میں آپ کی رہنمائی</p>
   <div class="footer-links">
-    <a href="quran.html">قرآن پاک</a>
-    <a href="hadees.html">احادیث</a>
-    <a href="tabligh.html">تبلیغ</a>
-    <a href="fiqh.html">فقہی مسائل</a>
-    <a href="namaz.html">نماز اوقات</a>
-    <a href="names.html">اسلامی نام</a>
+    <a href="quran.html">قرآن پاک</a><a href="hadees.html">احادیث</a>
+    <a href="tabligh.html">تبلیغ</a><a href="fiqh.html">فقہی مسائل</a>
+    <a href="namaz.html">نماز اوقات</a><a href="names.html">اسلامی نام</a>
   </div>
   <div class="footer-copy">© 2026 نورِ اسلام | جملہ حقوق محفوظ ہیں</div>
 </footer>
+
 <script src="main.js"></script>
+<script>
+// Hadees data - curated collection since free Hadees API is limited
+const hadeesData = {
+  bukhari: [
+    { num:1, arabic:"إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", urdu:"اعمال کا دارومدار نیتوں پر ہے اور ہر شخص کو وہی ملے گا جس کی اس نے نیت کی", rawi:"حضرت عمر بن الخطاب رضی اللہ عنہ" },
+    { num:2, arabic:"الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ", urdu:"مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں", rawi:"حضرت عبداللہ بن عمرو رضی اللہ عنہ" },
+    { num:3, arabic:"مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", urdu:"جو شخص اللہ اور آخرت کے دن پر ایمان رکھتا ہو اسے چاہیے کہ اچھی بات کہے یا خاموش رہے", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
+    { num:4, arabic:"طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ", urdu:"علم حاصل کرنا ہر مسلمان پر فرض ہے", rawi:"حضرت انس رضی اللہ عنہ" },
+    { num:5, arabic:"الدِّينُ النَّصِيحَةُ", urdu:"دین خیرخواہی کا نام ہے", rawi:"حضرت تمیم داری رضی اللہ عنہ" },
+    { num:6, arabic:"خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", urdu:"تم میں سب سے بہتر وہ ہے جو قرآن سیکھے اور سکھائے", rawi:"حضرت عثمان رضی اللہ عنہ" },
+    { num:7, arabic:"لَا يَدْخُلُ الْجَنَّةَ مَنْ كَانَ فِي قَلْبِهِ مِثْقَالُ ذَرَّةٍ مِنْ كِبْرٍ", urdu:"وہ شخص جنت میں نہیں جائے گا جس کے دل میں ذرہ برابر بھی تکبر ہو", rawi:"حضرت عبداللہ بن مسعود رضی اللہ عنہ" },
+    { num:8, arabic:"مَنْ غَشَّنَا فَلَيْسَ مِنَّا", urdu:"جو ہمیں دھوکہ دے وہ ہم میں سے نہیں", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
+    { num:9, arabic:"الصَّلَاةُ عِمَادُ الدِّينِ", urdu:"نماز دین کا ستون ہے", rawi:"حضرت معاذ بن جبل رضی اللہ عنہ" },
+    { num:10, arabic:"مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ", urdu:"جو شخص ایمان اور ثواب کی نیت سے رمضان کے روزے رکھے اس کے گزشتہ گناہ معاف کر دیے جاتے ہیں", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
+  ],
+  muslim: [
+    { num:1, arabic:"لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ", urdu:"تم میں سے کوئی مومن نہیں ہو سکتا جب تک اپنے بھائی کے لیے وہی پسند نہ کرے جو اپنے لیے پسند کرتا ہے", rawi:"حضرت انس رضی اللہ عنہ" },
+    { num:2, arabic:"اتَّقُوا الظُّلْمَ فَإِنَّ الظُّلْمَ ظُلُمَاتٌ يَوْمَ الْقِيَامَةِ", urdu:"ظلم سے بچو کیونکہ قیامت کے دن ظلم اندھیرے بن جائے گا", rawi:"حضرت جابر رضی اللہ عنہ" },
+    { num:3, arabic:"كُلُّ مُسْكِرٍ خَمْرٌ وَكُلُّ خَمْرٍ حَرَامٌ", urdu:"ہر نشہ آور چیز شراب ہے اور ہر شراب حرام ہے", rawi:"حضرت ابن عمر رضی اللہ عنہ" },
+    { num:4, arabic:"مَنْ مَاتَ وَهُوَ يَعْلَمُ أَنَّهُ لَا إِلَهَ إِلَّا اللَّهُ دَخَلَ الْجَنَّةَ", urdu:"جو اس حال میں مرا کہ وہ جانتا تھا کہ اللہ کے سوا کوئی معبود نہیں وہ جنت میں داخل ہوگا", rawi:"حضرت ابوذر رضی اللہ عنہ" },
+    { num:5, arabic:"الطَّهُورُ شَطْرُ الْإِيمَانِ", urdu:"طہارت آدھا ایمان ہے", rawi:"حضرت ابوملک اشعری رضی اللہ عنہ" },
+  ],
+  tirmidhi: [
+    { num:1, arabic:"اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا", urdu:"جہاں بھی ہو اللہ سے ڈرتے رہو اور برائی کے بعد نیکی کرو، وہ اسے مٹا دے گی", rawi:"حضرت ابوذر رضی اللہ عنہ" },
+    { num:2, arabic:"الرَّاحِمُونَ يَرْحَمُهُمُ الرَّحْمَنُ", urdu:"رحم کرنے والوں پر رحمٰن رحم فرماتا ہے", rawi:"حضرت عبداللہ بن عمرو رضی اللہ عنہ" },
+    { num:3, arabic:"الْمُؤْمِنُ مِرْآةُ الْمُؤْمِنِ", urdu:"مومن مومن کا آئینہ ہے", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
+  ],
+  abudawud: [
+    { num:1, arabic:"مَنْ لَا يَرْحَمُ النَّاسَ لَا يَرْحَمُهُ اللَّهُ", urdu:"جو لوگوں پر رحم نہیں کرتا اللہ اس پر رحم نہیں کرتا", rawi:"حضرت جریر رضی اللہ عنہ" },
+    { num:2, arabic:"إِنَّ اللَّهَ يُحِبُّ إِذَا عَمِلَ أَحَدُكُمْ عَمَلًا أَنْ يُتْقِنَهُ", urdu:"اللہ تعالیٰ اسے پسند کرتا ہے کہ جب تم میں سے کوئی کام کرے تو اسے اچھی طرح کرے", rawi:"حضرت عائشہ رضی اللہ عنہا" },
+  ],
+  nasai: [
+    { num:1, arabic:"مَنْ أَحَبَّ لِقَاءَ اللَّهِ أَحَبَّ اللَّهُ لِقَاءَهُ", urdu:"جو اللہ سے ملنا پسند کرے اللہ اس سے ملنا پسند کرتا ہے", rawi:"حضرت عبادہ بن صامت رضی اللہ عنہ" },
+  ],
+  ibnmajah: [
+    { num:1, arabic:"خَيْرُ الْأَصْحَابِ عِنْدَ اللَّهِ خَيْرُهُمْ لِصَاحِبِهِ", urdu:"اللہ کے نزدیک سب سے بہتر ساتھی وہ ہے جو اپنے ساتھی کے لیے سب سے بہتر ہو", rawi:"حضرت ابن عمر رضی اللہ عنہ" },
+  ]
+};
+
+const bookNames = {
+  bukhari: { ar:'صحيح البخاري', ur:'صحیح بخاری' },
+  muslim:  { ar:'صحيح مسلم',   ur:'صحیح مسلم' },
+  tirmidhi:{ ar:'جامع الترمذي',ur:'جامع ترمذی' },
+  abudawud:{ ar:'سنن أبي داود',ur:'سنن ابو داؤد' },
+  nasai:   { ar:'سنن النسائي', ur:'سنن نسائی' },
+  ibnmajah:{ ar:'سنن ابن ماجه',ur:'سنن ابن ماجہ' }
+};
+
+function openBook(key, urName, enName, total) {
+  document.getElementById('books-view').style.display = 'none';
+  document.getElementById('book-view').style.display = 'block';
+  document.getElementById('book-ar-name').textContent = bookNames[key].ar;
+  document.getElementById('book-ur-name').textContent = bookNames[key].ur;
+  window.scrollTo(0, 0);
+
+  const list = hadeesData[key] || [];
+  const bookKey = key;
+  const badge = bookNames[key].ur;
+
+  document.getElementById('hadees-list').innerHTML = list.map(h => `
+    <div class="hadees-full-card">
+      <span class="hadees-number">${badge} — ${h.num}</span>
+      <div class="hadees-arabic-text">${h.arabic}</div>
+      <div class="hadees-urdu-text">${h.urdu}</div>
+      <div class="hadees-footer">
+        <span class="hadees-ref">${h.rawi} سے روایت</span>
+        <span class="source-badge">${badge}</span>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('pagination').innerHTML = `
+    <button class="page-btn active">۱</button>
+    <button class="page-btn">۲</button>
+    <button class="page-btn">۳</button>
+    <span style="color:rgba(253,246,227,0.4); padding:0.6rem;">... مزید جلد آ رہی ہیں</span>`;
+}
+
+function showBooks() {
+  document.getElementById('books-view').style.display = 'block';
+  document.getElementById('book-view').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+</script>
 </body>
 </html>

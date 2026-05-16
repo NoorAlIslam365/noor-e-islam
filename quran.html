@@ -6,17 +6,111 @@
 <title>نورِ اسلام — قرآن پاک</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .quran-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 1rem; }
+  .surah-card {
+    background: linear-gradient(135deg, rgba(29,67,50,0.35), rgba(13,27,18,0.5));
+    border: 1px solid rgba(201,168,76,0.15); border-radius: 12px;
+    padding: 1.2rem 1rem; text-align: center;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .surah-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+  .surah-num {
+    font-size: 0.75rem; color: var(--dark); background: var(--gold);
+    border-radius: 50%; width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.5rem; direction: ltr; font-weight: 700;
+  }
+  .surah-arabic { font-family: 'Amiri', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 0.2rem; }
+  .surah-urdu { font-size: 0.85rem; color: var(--cream); margin-bottom: 0.2rem; }
+  .surah-info { font-size: 0.72rem; color: rgba(253,246,227,0.4); }
+
+  #surah-reader { display: none; }
+  .reader-header {
+    background: linear-gradient(135deg, rgba(29,67,50,0.6), rgba(13,27,18,0.8));
+    border: 1px solid rgba(201,168,76,0.25); border-radius: 16px;
+    padding: 1.5rem 2rem; margin-bottom: 2rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .reader-title { font-family: 'Amiri', serif; font-size: 1.8rem; color: var(--gold); }
+  .reader-info { font-size: 0.85rem; color: rgba(253,246,227,0.6); margin-top: 0.3rem; }
+  .back-btn {
+    background: rgba(201,168,76,0.15); border: 1px solid var(--gold);
+    color: var(--gold); padding: 0.6rem 1.5rem; border-radius: 25px;
+    cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: all 0.3s;
+  }
+  .back-btn:hover { background: rgba(201,168,76,0.25); }
+
+  .bismillah-reader {
+    text-align: center; font-family: 'Amiri', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--gold);
+    margin-bottom: 2rem; padding: 1.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    text-shadow: 0 0 30px rgba(201,168,76,0.3);
+  }
+
+  .ayat-container { display: flex; flex-direction: column; gap: 1.5rem; }
+  .ayat-block {
+    background: linear-gradient(135deg, rgba(29,67,50,0.3), rgba(13,27,18,0.5));
+    border: 1px solid rgba(201,168,76,0.1); border-radius: 12px;
+    padding: 1.5rem; transition: all 0.3s;
+  }
+  .ayat-block:hover { border-color: rgba(201,168,76,0.3); }
+  .ayat-arabic {
+    font-family: 'Amiri', serif;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    line-height: 2.4; color: var(--cream);
+    text-align: right; margin-bottom: 1rem;
+  }
+  .ayat-urdu {
+    font-size: 0.95rem; color: rgba(253,246,227,0.7);
+    line-height: 2; border-top: 1px solid rgba(201,168,76,0.1);
+    padding-top: 0.8rem; text-align: right;
+  }
+  .ayat-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); font-size: 0.8rem; direction: ltr;
+    float: left; margin-top: 0.3rem;
+  }
+
+  .nav-btns { display: flex; justify-content: space-between; margin-top: 2rem; gap: 1rem; }
+  .nav-surah-btn {
+    background: rgba(29,67,50,0.4); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); padding: 0.8rem 1.5rem; border-radius: 10px;
+    cursor: pointer; font-family: inherit; font-size: 0.9rem; transition: all 0.3s; flex: 1; text-align: center;
+  }
+  .nav-surah-btn:hover { background: rgba(201,168,76,0.15); }
+  .nav-surah-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .loading-box { text-align: center; padding: 4rem 2rem; color: var(--gold-light); font-family: 'Amiri', serif; font-size: 1.2rem; }
+  .loading-spinner { width: 50px; height: 50px; border: 3px solid rgba(201,168,76,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .filter-row { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+  .filter-pill {
+    background: rgba(29,67,50,0.3); border: 1px solid rgba(201,168,76,0.2);
+    color: var(--cream); padding: 0.5rem 1.2rem; border-radius: 25px;
+    cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.3s;
+  }
+  .filter-pill.active, .filter-pill:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); color: var(--gold); }
+
+  .search-result-item {
+    background: rgba(13,27,18,0.5); border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 10px; padding: 1rem; cursor: pointer; transition: all 0.3s; margin-bottom: 0.5rem;
+  }
+  .search-result-item:hover { border-color: var(--gold); }
+</style>
 </head>
 <body>
 <div class="geo-bg"></div>
 <div class="geo-pattern"></div>
-
 <div class="ticker">
   <div class="ticker-inner">
-    <span>📖 قرآن پاک — اللہ کا کلام، ہدایت کا سرچشمہ</span>
-    <span>🌙 إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ</span>
-    <span>📖 قرآن پاک — اللہ کا کلام، ہدایت کا سرچشمہ</span>
-    <span>🌙 إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ</span>
+    <span>📖 إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ</span>
+    <span id="ticker-namaz">🕌 نماز اوقات لوڈ ہو رہے ہیں...</span>
+    <span>📖 قرآن کریم — اللہ کا مقدس کلام</span>
   </div>
 </div>
 
@@ -24,10 +118,7 @@
   <div class="header-top">
     <div class="logo-section">
       <div class="logo-icon">☪️</div>
-      <div class="logo-text">
-        <h1>NOOR-E-ISLAM</h1>
-        <p>نورِ اسلام — اسلامی پورٹل</p>
-      </div>
+      <div class="logo-text"><h1>NOOR-E-ISLAM</h1><p>نورِ اسلام — اسلامی پورٹل</p></div>
     </div>
     <div class="header-info">
       <div class="info-item">🗓️ <span id="hijri-today" class="hijri-today">...</span></div>
@@ -48,82 +139,171 @@
   </nav>
 </header>
 
-<div class="page-hero">
-  <div class="ar-title">القرآن الكريم</div>
-  <h1>قرآنِ پاک</h1>
-  <p>اللہ تعالیٰ کا مقدس کلام — اردو ترجمہ و تفسیر کے ساتھ</p>
+<!-- SURAH LIST -->
+<div id="surah-list">
+  <div class="page-hero">
+    <div class="ar-title">القرآن الكريم</div>
+    <h1>قرآنِ پاک</h1>
+    <p>کسی بھی سورت پر کلک کریں — مکمل عربی متن اور اردو ترجمہ کے ساتھ کھل جائے گی</p>
+  </div>
+  <section class="main-section">
+    <div class="search-bar" style="margin-bottom:1.5rem;">
+      <input type="text" id="surah-search" placeholder="سورت کا نام تلاش کریں..." oninput="searchSurah(this.value)">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="filter-row">
+      <button class="filter-pill active" onclick="filterSurahs('all',this)">تمام سورتیں</button>
+      <button class="filter-pill" onclick="filterSurahs('Meccan',this)">مکی سورتیں</button>
+      <button class="filter-pill" onclick="filterSurahs('Medinan',this)">مدنی سورتیں</button>
+    </div>
+    <div id="search-results" style="display:none;"></div>
+    <div id="surah-grid" class="quran-grid">
+      <div class="loading-box" style="grid-column:1/-1;">
+        <div class="loading-spinner"></div>
+        قرآن پاک لوڈ ہو رہا ہے...
+      </div>
+    </div>
+  </section>
 </div>
 
-<section class="main-section">
-  <!-- Search -->
-  <div class="search-bar" style="margin-bottom:2rem;">
-    <input type="text" placeholder="سورت یا آیت تلاش کریں...">
-    <button class="search-btn">🔍</button>
-  </div>
-
-  <!-- Filter tabs -->
-  <div class="content-tabs" style="justify-content:center; margin-bottom:2rem;">
-    <button class="tab-btn active">تمام سورتیں</button>
-    <button class="tab-btn">مکی سورتیں</button>
-    <button class="tab-btn">مدنی سورتیں</button>
-    <button class="tab-btn">۳۰ پارے</button>
-  </div>
-
-  <!-- Surahs Grid -->
-  <div class="quran-grid">
-    <div class="surah-card"><div class="surah-num">1</div><div class="surah-arabic">الفاتحة</div><div class="surah-urdu">الفاتحہ</div><div class="surah-info">۷ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">2</div><div class="surah-arabic">البقرة</div><div class="surah-urdu">البقرہ</div><div class="surah-info">۲۸۶ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">3</div><div class="surah-arabic">آل عمران</div><div class="surah-urdu">آل عمران</div><div class="surah-info">۲۰۰ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">4</div><div class="surah-arabic">النساء</div><div class="surah-urdu">النساء</div><div class="surah-info">۱۷۶ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">5</div><div class="surah-arabic">المائدة</div><div class="surah-urdu">المائدہ</div><div class="surah-info">۱۲۰ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">6</div><div class="surah-arabic">الأنعام</div><div class="surah-urdu">الانعام</div><div class="surah-info">۱۶۵ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">7</div><div class="surah-arabic">الأعراف</div><div class="surah-urdu">الاعراف</div><div class="surah-info">۲۰۶ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">8</div><div class="surah-arabic">الأنفال</div><div class="surah-urdu">الانفال</div><div class="surah-info">۷۵ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">9</div><div class="surah-arabic">التوبة</div><div class="surah-urdu">التوبہ</div><div class="surah-info">۱۲۹ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">10</div><div class="surah-arabic">يونس</div><div class="surah-urdu">یونس</div><div class="surah-info">۱۰۹ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">11</div><div class="surah-arabic">هود</div><div class="surah-urdu">ہود</div><div class="surah-info">۱۲۳ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">12</div><div class="surah-arabic">يوسف</div><div class="surah-urdu">یوسف</div><div class="surah-info">۱۱۱ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">13</div><div class="surah-arabic">الرعد</div><div class="surah-urdu">الرعد</div><div class="surah-info">۴۳ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">14</div><div class="surah-arabic">إبراهيم</div><div class="surah-urdu">ابراہیم</div><div class="surah-info">۵۲ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">15</div><div class="surah-arabic">الحجر</div><div class="surah-urdu">الحجر</div><div class="surah-info">۹۹ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">16</div><div class="surah-arabic">النحل</div><div class="surah-urdu">النحل</div><div class="surah-info">۱۲۸ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">17</div><div class="surah-arabic">الإسراء</div><div class="surah-urdu">الاسراء</div><div class="surah-info">۱۱۱ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">18</div><div class="surah-arabic">الكهف</div><div class="surah-urdu">الکہف</div><div class="surah-info">۱۱۰ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">19</div><div class="surah-arabic">مريم</div><div class="surah-urdu">مریم</div><div class="surah-info">۹۸ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">20</div><div class="surah-arabic">طه</div><div class="surah-urdu">طٰہٰ</div><div class="surah-info">۱۳۵ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">21</div><div class="surah-arabic">الأنبياء</div><div class="surah-urdu">الانبیاء</div><div class="surah-info">۱۱۲ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">22</div><div class="surah-arabic">الحج</div><div class="surah-urdu">الحج</div><div class="surah-info">۷۸ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">23</div><div class="surah-arabic">المؤمنون</div><div class="surah-urdu">المومنون</div><div class="surah-info">۱۱۸ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">24</div><div class="surah-arabic">النور</div><div class="surah-urdu">النور</div><div class="surah-info">۶۴ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">25</div><div class="surah-arabic">الفرقان</div><div class="surah-urdu">الفرقان</div><div class="surah-info">۷۷ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">26</div><div class="surah-arabic">الشعراء</div><div class="surah-urdu">الشعراء</div><div class="surah-info">۲۲۷ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">27</div><div class="surah-arabic">النمل</div><div class="surah-urdu">النمل</div><div class="surah-info">۹۳ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">28</div><div class="surah-arabic">القصص</div><div class="surah-urdu">القصص</div><div class="surah-info">۸۸ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">29</div><div class="surah-arabic">العنكبوت</div><div class="surah-urdu">العنکبوت</div><div class="surah-info">۶۹ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">30</div><div class="surah-arabic">الروم</div><div class="surah-urdu">الروم</div><div class="surah-info">۶۰ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">36</div><div class="surah-arabic">يٰس</div><div class="surah-urdu">یٰسین</div><div class="surah-info">۸۳ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">55</div><div class="surah-arabic">الرحمن</div><div class="surah-urdu">الرحمٰن</div><div class="surah-info">۷۸ آیات | مدنی</div></div>
-    <div class="surah-card"><div class="surah-num">67</div><div class="surah-arabic">الملك</div><div class="surah-urdu">الملک</div><div class="surah-info">۳۰ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">112</div><div class="surah-arabic">الإخلاص</div><div class="surah-urdu">الاخلاص</div><div class="surah-info">۴ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">113</div><div class="surah-arabic">الفلق</div><div class="surah-urdu">الفلق</div><div class="surah-info">۵ آیات | مکی</div></div>
-    <div class="surah-card"><div class="surah-num">114</div><div class="surah-arabic">الناس</div><div class="surah-urdu">الناس</div><div class="surah-info">۶ آیات | مکی</div></div>
-  </div>
-  <button class="more-btn">تمام ١١٤ سورتیں دیکھیں ←</button>
-</section>
+<!-- SURAH READER -->
+<div id="surah-reader">
+  <section class="main-section">
+    <div class="reader-header">
+      <div>
+        <div class="reader-title" id="reader-name">...</div>
+        <div class="reader-info" id="reader-info">...</div>
+      </div>
+      <button class="back-btn" onclick="showList()">← واپس فہرست</button>
+    </div>
+    <div id="reader-content">
+      <div class="loading-box"><div class="loading-spinner"></div>سورت لوڈ ہو رہی ہے...</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-surah-btn" id="btn-prev" onclick="changeSurah(-1)">← پچھلی سورت</button>
+      <button class="nav-surah-btn" id="btn-next" onclick="changeSurah(1)">اگلی سورت →</button>
+    </div>
+  </section>
+</div>
 
 <footer>
   <div class="footer-logo">☪️ نورِ اسلام</div>
   <p class="footer-tagline">اسلامی تعلیمات کی روشنی میں آپ کی رہنمائی</p>
   <div class="footer-links">
-    <a href="quran.html">قرآن پاک</a>
-    <a href="hadees.html">احادیث</a>
-    <a href="tabligh.html">تبلیغ</a>
-    <a href="fiqh.html">فقہی مسائل</a>
-    <a href="namaz.html">نماز اوقات</a>
-    <a href="names.html">اسلامی نام</a>
+    <a href="quran.html">قرآن پاک</a><a href="hadees.html">احادیث</a>
+    <a href="tabligh.html">تبلیغ</a><a href="fiqh.html">فقہی مسائل</a>
+    <a href="namaz.html">نماز اوقات</a><a href="names.html">اسلامی نام</a>
   </div>
   <div class="footer-copy">© 2026 نورِ اسلام | جملہ حقوق محفوظ ہیں</div>
 </footer>
+
 <script src="main.js"></script>
+<script>
+let allSurahs = [];
+let currentNum = 1;
+
+const urduNames = {
+  1:"الفاتحہ",2:"البقرہ",3:"آل عمران",4:"النساء",5:"المائدہ",6:"الانعام",7:"الاعراف",8:"الانفال",9:"التوبہ",10:"یونس",11:"ہود",12:"یوسف",13:"الرعد",14:"ابراہیم",15:"الحجر",16:"النحل",17:"الاسراء",18:"الکہف",19:"مریم",20:"طٰہٰ",21:"الانبیاء",22:"الحج",23:"المومنون",24:"النور",25:"الفرقان",26:"الشعراء",27:"النمل",28:"القصص",29:"العنکبوت",30:"الروم",31:"لقمان",32:"السجدہ",33:"الاحزاب",34:"سبا",35:"فاطر",36:"یٰسین",37:"الصافات",38:"ص",39:"الزمر",40:"غافر",41:"فصلت",42:"الشوریٰ",43:"الزخرف",44:"الدخان",45:"الجاثیہ",46:"الاحقاف",47:"محمد",48:"الفتح",49:"الحجرات",50:"ق",51:"الذاریات",52:"الطور",53:"النجم",54:"القمر",55:"الرحمٰن",56:"الواقعہ",57:"الحدید",58:"المجادلہ",59:"الحشر",60:"الممتحنہ",61:"الصف",62:"الجمعہ",63:"المنافقون",64:"التغابن",65:"الطلاق",66:"التحریم",67:"الملک",68:"القلم",69:"الحاقہ",70:"المعارج",71:"نوح",72:"الجن",73:"المزمل",74:"المدثر",75:"القیامہ",76:"الانسان",77:"المرسلات",78:"النبا",79:"النازعات",80:"عبس",81:"التکویر",82:"الانفطار",83:"المطففین",84:"الانشقاق",85:"البروج",86:"الطارق",87:"الاعلیٰ",88:"الغاشیہ",89:"الفجر",90:"البلد",91:"الشمس",92:"اللیل",93:"الضحیٰ",94:"الانشراح",95:"التین",96:"العلق",97:"القدر",98:"البینہ",99:"الزلزلہ",100:"العادیات",101:"القارعہ",102:"التکاثر",103:"العصر",104:"الہمزہ",105:"الفیل",106:"قریش",107:"الماعون",108:"الکوثر",109:"الکافرون",110:"النصر",111:"المسد",112:"الاخلاص",113:"الفلق",114:"الناس"
+};
+
+async function loadSurahList() {
+  try {
+    const res = await fetch('https://api.alquran.cloud/v1/surah');
+    const data = await res.json();
+    allSurahs = data.data;
+    renderGrid(allSurahs);
+  } catch(e) {
+    document.getElementById('surah-grid').innerHTML =
+      '<div class="loading-box" style="grid-column:1/-1;">⚠️ انٹرنیٹ کنیکشن چیک کریں</div>';
+  }
+}
+
+function renderGrid(list) {
+  document.getElementById('surah-grid').innerHTML = list.map(s => `
+    <div class="surah-card" onclick="openSurah(${s.number})">
+      <div class="surah-num">${s.number}</div>
+      <div class="surah-arabic">${s.name}</div>
+      <div class="surah-urdu">${urduNames[s.number] || ''}</div>
+      <div class="surah-info">${s.numberOfAyahs} آیات | ${s.revelationType==='Meccan'?'مکی':'مدنی'}</div>
+    </div>`).join('');
+}
+
+function filterSurahs(type, btn) {
+  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('surah-search').value = '';
+  document.getElementById('search-results').style.display = 'none';
+  document.getElementById('surah-grid').style.display = 'grid';
+  renderGrid(type === 'all' ? allSurahs : allSurahs.filter(s => s.revelationType === type));
+}
+
+function searchSurah(q) {
+  const sr = document.getElementById('search-results');
+  const sg = document.getElementById('surah-grid');
+  if (!q.trim()) { sr.style.display='none'; sg.style.display='grid'; return; }
+  sg.style.display = 'none'; sr.style.display = 'block';
+  const found = allSurahs.filter(s =>
+    s.name.includes(q) || (urduNames[s.number]||'').includes(q) ||
+    s.englishName.toLowerCase().includes(q.toLowerCase()) || String(s.number).includes(q)
+  );
+  sr.innerHTML = found.length ? found.map(s => `
+    <div class="search-result-item" onclick="openSurah(${s.number})">
+      <span style="font-family:'Amiri',serif;font-size:1.2rem;color:var(--gold);">${s.name}</span>
+      &nbsp; <span>${urduNames[s.number]}</span>
+      &nbsp; <span style="color:rgba(253,246,227,0.4);font-size:0.82rem;">${s.numberOfAyahs} آیات</span>
+    </div>`).join('') : '<div class="loading-box">کوئی سورت نہیں ملی</div>';
+}
+
+async function openSurah(num) {
+  currentNum = num;
+  document.getElementById('surah-list').style.display = 'none';
+  document.getElementById('surah-reader').style.display = 'block';
+  document.getElementById('reader-content').innerHTML =
+    '<div class="loading-box"><div class="loading-spinner"></div>سورت لوڈ ہو رہی ہے...</div>';
+  document.getElementById('btn-prev').disabled = num <= 1;
+  document.getElementById('btn-next').disabled = num >= 114;
+  window.scrollTo(0, 0);
+
+  try {
+    const [ar, ur] = await Promise.all([
+      fetch(`https://api.alquran.cloud/v1/surah/${num}`).then(r=>r.json()),
+      fetch(`https://api.alquran.cloud/v1/surah/${num}/ur.jalandhry`).then(r=>r.json())
+    ]);
+    const s = ar.data;
+    const urAyahs = ur.data.ayahs;
+
+    document.getElementById('reader-name').textContent = `${s.name}  —  ${urduNames[num]||''}`;
+    document.getElementById('reader-info').textContent =
+      `آیات: ${s.numberOfAyahs} | ${s.revelationType==='Meccan'?'مکی':'مدنی'} | پارہ: ${s.ayahs[0]?.juz||''}`;
+
+    let html = num !== 9 ? `<div class="bismillah-reader">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>` : '';
+    html += '<div class="ayat-container">';
+    s.ayahs.forEach((a, i) => {
+      html += `<div class="ayat-block">
+        <div class="ayat-arabic"><span class="ayat-num">${a.numberInSurah}</span>${a.text}</div>
+        ${urAyahs[i] ? `<div class="ayat-urdu">${urAyahs[i].text}</div>` : ''}
+      </div>`;
+    });
+    html += '</div>';
+    document.getElementById('reader-content').innerHTML = html;
+  } catch(e) {
+    document.getElementById('reader-content').innerHTML =
+      '<div class="loading-box">⚠️ سورت لوڈ نہیں ہو سکی — انٹرنیٹ چیک کریں</div>';
+  }
+}
+
+function showList() {
+  document.getElementById('surah-list').style.display = 'block';
+  document.getElementById('surah-reader').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+
+function changeSurah(dir) {
+  const n = currentNum + dir;
+  if (n >= 1 && n <= 114) openSurah(n);
+}
+
+loadSurahList();
+</script>
 </body>
 </html>
