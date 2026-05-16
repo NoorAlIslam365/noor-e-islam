@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نورِ اسلام — قرآن پاک</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="geo-bg"></div>
+<div class="geo-pattern"></div>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>📖 قرآن پاک — اللہ کا کلام، ہدایت کا سرچشمہ</span>
+    <span>🌙 إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ</span>
+    <span>📖 قرآن پاک — اللہ کا کلام، ہدایت کا سرچشمہ</span>
+    <span>🌙 إِنَّ هَٰذَا الْقُرْآنَ يَهْدِي لِلَّتِي هِيَ أَقْوَمُ</span>
+  </div>
+</div>
+
+<header>
+  <div class="header-top">
+    <div class="logo-section">
+      <div class="logo-icon">☪️</div>
+      <div class="logo-text">
+        <h1>NOOR-E-ISLAM</h1>
+        <p>نورِ اسلام — اسلامی پورٹل</p>
+      </div>
+    </div>
+    <div class="header-info">
+      <div class="info-item">🗓️ <span>۲۷ شوال ۱۴۴۶ھ</span></div>
+      <div class="info-item">📅 <span id="gregorian-today"></span></div>
+      <div class="info-item">🕐 <span id="current-time"></span></div>
+    </div>
+  </div>
+  <nav>
+    <a href="index.html">🏠 ہوم</a>
+    <a href="quran.html" class="active">📖 قرآن</a>
+    <a href="hadees.html">📜 حدیث</a>
+    <a href="tabligh.html">🕌 تبلیغ</a>
+    <a href="islahi.html">✍️ اصلاحی مضامین</a>
+    <a href="fiqh.html">⚖️ فقہی مسائل</a>
+    <a href="namaz.html">🕋 نماز اوقات</a>
+    <a href="calendar.html">📅 اسلامی تقویم</a>
+    <a href="names.html">👶 اسلامی نام</a>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="ar-title">القرآن الكريم</div>
+  <h1>قرآنِ پاک</h1>
+  <p>اللہ تعالیٰ کا مقدس کلام — اردو ترجمہ و تفسیر کے ساتھ</p>
+</div>
+
+<section class="main-section">
+  <!-- Search -->
+  <div class="search-bar" style="margin-bottom:2rem;">
+    <input type="text" placeholder="سورت یا آیت تلاش کریں...">
+    <button class="search-btn">🔍</button>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="content-tabs" style="justify-content:center; margin-bottom:2rem;">
+    <button class="tab-btn active">تمام سورتیں</button>
+    <button class="tab-btn">مکی سورتیں</button>
+    <button class="tab-btn">مدنی سورتیں</button>
+    <button class="tab-btn">۳۰ پارے</button>
+  </div>
+
+  <!-- Surahs Grid -->
+  <div class="quran-grid">
+    <div class="surah-card"><div class="surah-num">1</div><div class="surah-arabic">الفاتحة</div><div class="surah-urdu">الفاتحہ</div><div class="surah-info">۷ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">2</div><div class="surah-arabic">البقرة</div><div class="surah-urdu">البقرہ</div><div class="surah-info">۲۸۶ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">3</div><div class="surah-arabic">آل عمران</div><div class="surah-urdu">آل عمران</div><div class="surah-info">۲۰۰ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">4</div><div class="surah-arabic">النساء</div><div class="surah-urdu">النساء</div><div class="surah-info">۱۷۶ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">5</div><div class="surah-arabic">المائدة</div><div class="surah-urdu">المائدہ</div><div class="surah-info">۱۲۰ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">6</div><div class="surah-arabic">الأنعام</div><div class="surah-urdu">الانعام</div><div class="surah-info">۱۶۵ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">7</div><div class="surah-arabic">الأعراف</div><div class="surah-urdu">الاعراف</div><div class="surah-info">۲۰۶ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">8</div><div class="surah-arabic">الأنفال</div><div class="surah-urdu">الانفال</div><div class="surah-info">۷۵ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">9</div><div class="surah-arabic">التوبة</div><div class="surah-urdu">التوبہ</div><div class="surah-info">۱۲۹ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">10</div><div class="surah-arabic">يونس</div><div class="surah-urdu">یونس</div><div class="surah-info">۱۰۹ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">11</div><div class="surah-arabic">هود</div><div class="surah-urdu">ہود</div><div class="surah-info">۱۲۳ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">12</div><div class="surah-arabic">يوسف</div><div class="surah-urdu">یوسف</div><div class="surah-info">۱۱۱ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">13</div><div class="surah-arabic">الرعد</div><div class="surah-urdu">الرعد</div><div class="surah-info">۴۳ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">14</div><div class="surah-arabic">إبراهيم</div><div class="surah-urdu">ابراہیم</div><div class="surah-info">۵۲ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">15</div><div class="surah-arabic">الحجر</div><div class="surah-urdu">الحجر</div><div class="surah-info">۹۹ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">16</div><div class="surah-arabic">النحل</div><div class="surah-urdu">النحل</div><div class="surah-info">۱۲۸ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">17</div><div class="surah-arabic">الإسراء</div><div class="surah-urdu">الاسراء</div><div class="surah-info">۱۱۱ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">18</div><div class="surah-arabic">الكهف</div><div class="surah-urdu">الکہف</div><div class="surah-info">۱۱۰ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">19</div><div class="surah-arabic">مريم</div><div class="surah-urdu">مریم</div><div class="surah-info">۹۸ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">20</div><div class="surah-arabic">طه</div><div class="surah-urdu">طٰہٰ</div><div class="surah-info">۱۳۵ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">21</div><div class="surah-arabic">الأنبياء</div><div class="surah-urdu">الانبیاء</div><div class="surah-info">۱۱۲ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">22</div><div class="surah-arabic">الحج</div><div class="surah-urdu">الحج</div><div class="surah-info">۷۸ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">23</div><div class="surah-arabic">المؤمنون</div><div class="surah-urdu">المومنون</div><div class="surah-info">۱۱۸ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">24</div><div class="surah-arabic">النور</div><div class="surah-urdu">النور</div><div class="surah-info">۶۴ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">25</div><div class="surah-arabic">الفرقان</div><div class="surah-urdu">الفرقان</div><div class="surah-info">۷۷ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">26</div><div class="surah-arabic">الشعراء</div><div class="surah-urdu">الشعراء</div><div class="surah-info">۲۲۷ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">27</div><div class="surah-arabic">النمل</div><div class="surah-urdu">النمل</div><div class="surah-info">۹۳ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">28</div><div class="surah-arabic">القصص</div><div class="surah-urdu">القصص</div><div class="surah-info">۸۸ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">29</div><div class="surah-arabic">العنكبوت</div><div class="surah-urdu">العنکبوت</div><div class="surah-info">۶۹ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">30</div><div class="surah-arabic">الروم</div><div class="surah-urdu">الروم</div><div class="surah-info">۶۰ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">36</div><div class="surah-arabic">يٰس</div><div class="surah-urdu">یٰسین</div><div class="surah-info">۸۳ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">55</div><div class="surah-arabic">الرحمن</div><div class="surah-urdu">الرحمٰن</div><div class="surah-info">۷۸ آیات | مدنی</div></div>
+    <div class="surah-card"><div class="surah-num">67</div><div class="surah-arabic">الملك</div><div class="surah-urdu">الملک</div><div class="surah-info">۳۰ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">112</div><div class="surah-arabic">الإخلاص</div><div class="surah-urdu">الاخلاص</div><div class="surah-info">۴ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">113</div><div class="surah-arabic">الفلق</div><div class="surah-urdu">الفلق</div><div class="surah-info">۵ آیات | مکی</div></div>
+    <div class="surah-card"><div class="surah-num">114</div><div class="surah-arabic">الناس</div><div class="surah-urdu">الناس</div><div class="surah-info">۶ آیات | مکی</div></div>
+  </div>
+  <button class="more-btn">تمام ١١٤ سورتیں دیکھیں ←</button>
+</section>
+
+<footer>
+  <div class="footer-logo">☪️ نورِ اسلام</div>
+  <p class="footer-tagline">اسلامی تعلیمات کی روشنی میں آپ کی رہنمائی</p>
+  <div class="footer-links">
+    <a href="quran.html">قرآن پاک</a>
+    <a href="hadees.html">احادیث</a>
+    <a href="tabligh.html">تبلیغ</a>
+    <a href="fiqh.html">فقہی مسائل</a>
+    <a href="namaz.html">نماز اوقات</a>
+    <a href="names.html">اسلامی نام</a>
+  </div>
+  <div class="footer-copy">© 2026 نورِ اسلام | جملہ حقوق محفوظ ہیں</div>
+</footer>
+<script src="main.js"></script>
+</body>
+</html>
