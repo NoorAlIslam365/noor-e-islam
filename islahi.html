@@ -6,16 +6,26 @@
 <title>نورِ اسلام — اصلاحی مضامین</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .tab-nav { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; justify-content:center; }
+  .tab-nav button { background:rgba(29,67,50,0.3); border:1px solid rgba(201,168,76,0.2); color:var(--cream); padding:0.6rem 1.2rem; border-radius:8px; cursor:pointer; font-family:inherit; font-size:0.9rem; transition:all 0.3s; }
+  .tab-nav button.active, .tab-nav button:hover { background:rgba(201,168,76,0.15); border-color:var(--gold); color:var(--gold); }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+  .content-card { background:linear-gradient(135deg,rgba(29,67,50,0.4),rgba(13,27,18,0.6)); border:1px solid rgba(201,168,76,0.18); border-radius:16px; padding:2rem; margin-bottom:1.5rem; }
+  .content-card:hover { border-color:rgba(201,168,76,0.4); }
+  .content-card h3 { color:var(--gold-light); font-size:1.1rem; margin-bottom:0.8rem; }
+  .content-card p { color:rgba(253,246,227,0.75); font-size:0.95rem; line-height:2.2; }
+  .arabic-quote { font-family:'Amiri',serif; font-size:1.4rem; color:var(--gold); line-height:2.2; margin-bottom:0.8rem; text-align:right; }
+  .ref-badge { display:inline-block; background:rgba(201,168,76,0.15); border:1px solid rgba(201,168,76,0.3); color:var(--gold); font-size:0.75rem; padding:0.2rem 0.7rem; border-radius:15px; margin-bottom:1rem; }
+</style>
 </head>
 <body>
-<div class="geo-bg"></div>
-<div class="geo-pattern"></div>
-<div class="ticker">
-  <div class="ticker-inner">
-    <span>✍️ قَدْ أَفْلَحَ مَن زَكَّاهَا — بے شک وہ کامیاب ہوا جس نے اپنے نفس کو پاک کیا</span>
-    <span>✍️ قَدْ أَفْلَحَ مَن زَكَّاهَا — بے شک وہ کامیاب ہوا جس نے اپنے نفس کو پاک کیا</span>
-  </div>
-</div>
+<div class="geo-bg"></div><div class="geo-pattern"></div>
+<div class="ticker"><div class="ticker-inner">
+  <span>✍️ قَدْ أَفْلَحَ مَن زَكَّاهَا — بے شک وہ کامیاب ہوا جس نے اپنے نفس کو پاک کیا</span>
+  <span id="ticker-namaz">🕌 نماز اوقات لوڈ ہو رہے ہیں...</span>
+</div></div>
 <header>
   <div class="header-top">
     <div class="logo-section">
@@ -29,15 +39,10 @@
     </div>
   </div>
   <nav>
-    <a href="index.html">🏠 ہوم</a>
-    <a href="quran.html">📖 قرآن</a>
-    <a href="hadees.html">📜 حدیث</a>
-    <a href="tabligh.html">🕌 تبلیغ</a>
-    <a href="islahi.html" class="active">✍️ اصلاحی مضامین</a>
-    <a href="fiqh.html">⚖️ فقہی مسائل</a>
-    <a href="namaz.html">🕋 نماز اوقات</a>
-    <a href="calendar.html">📅 اسلامی تقویم</a>
-    <a href="names.html">👶 اسلامی نام</a>
+    <a href="index.html">🏠 ہوم</a><a href="quran.html">📖 قرآن</a><a href="hadees.html">📜 حدیث</a>
+    <a href="tabligh.html">🕌 تبلیغ</a><a href="islahi.html" class="active">✍️ اصلاحی مضامین</a>
+    <a href="fiqh.html">⚖️ فقہی مسائل</a><a href="namaz.html">🕋 نماز اوقات</a>
+    <a href="calendar.html">📅 اسلامی تقویم</a><a href="names.html">👶 اسلامی نام</a>
   </nav>
 </header>
 
@@ -48,108 +53,138 @@
 </div>
 
 <section class="main-section">
-  <div class="content-tabs" style="justify-content:center; margin-bottom:2.5rem;">
-    <button class="tab-btn active">اخلاق</button>
-    <button class="tab-btn">سیرتِ نبویؐ</button>
-    <button class="tab-btn">تزکیہ نفس</button>
-    <button class="tab-btn">خاندانی زندگی</button>
-    <button class="tab-btn">معاشرتی مسائل</button>
+  <div class="tab-nav">
+    <button class="active" onclick="showTab('akhlaq',this)">اخلاق</button>
+    <button onclick="showTab('seerat',this)">سیرتِ نبویؐ</button>
+    <button onclick="showTab('tazkiya',this)">تزکیہ نفس</button>
+    <button onclick="showTab('khandan',this)">خاندانی زندگی</button>
+    <button onclick="showTab('muashra',this)">معاشرتی مسائل</button>
   </div>
 
-  <!-- Akhlaq Section -->
-  <div class="section-title"><span class="ar">الأخلاق الإسلامية</span><h2>اسلامی اخلاق</h2></div>
-  <div class="divider"><span class="ornament">❖</span></div>
-
-  <div class="article-list" style="margin-bottom:3rem;">
-    <div class="article-item">
-      <div class="article-num">۱</div>
-      <div class="article-info">
-        <h4>سچائی اور امانت داری — اسلامی اخلاق کی بنیاد</h4>
-        <p>سچ بولنے اور امانت ادا کرنے کی اہمیت قرآن و سنت کی روشنی میں — مولانا اشرف علی تھانویؒ</p>
-      </div>
-      <div class="article-arrow">←</div>
+  <!-- AKHLAQ -->
+  <div id="tab-akhlaq" class="tab-content active">
+    <div class="section-title"><span class="ar">الأخلاق الإسلامية</span><h2>اسلامی اخلاق</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div class="content-card">
+      <span class="ref-badge">اخلاق — ۱</span>
+      <h3>سچائی — اسلامی اخلاق کی بنیاد</h3>
+      <div class="arabic-quote">يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَكُونُوا مَعَ الصَّادِقِينَ</div>
+      <p>نبی کریم ﷺ نے فرمایا: "سچائی نیکی کی طرف لے جاتی ہے اور نیکی جنت کی طرف۔ اور جھوٹ برائی کی طرف لے جاتا ہے اور برائی جہنم کی طرف۔" سچا انسان اللہ کے ہاں صدیق لکھا جاتا ہے۔ سچ بولنا مشکل ہوتا ہے لیکن اس کا پھل میٹھا ہوتا ہے۔ ہمیں کاروبار، گھر اور ہر جگہ سچ کو اپنانا چاہیے۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۲</div>
-      <div class="article-info">
-        <h4>والدین کے حقوق — اسلامی تعلیمات</h4>
-        <p>ماں باپ کی خدمت اور ادب کے بارے میں اسلامی ہدایات</p>
-      </div>
-      <div class="article-arrow">←</div>
+    <div class="content-card">
+      <span class="ref-badge">اخلاق — ۲</span>
+      <h3>والدین کے حقوق</h3>
+      <div class="arabic-quote">وَقَضَىٰ رَبُّكَ أَلَّا تَعْبُدُوا إِلَّا إِيَّاهُ وَبِالْوَالِدَيْنِ إِحْسَانًا</div>
+      <p>اللہ نے اپنی عبادت کے ساتھ والدین کے ساتھ حسن سلوک کا حکم دیا ہے۔ نبی ﷺ نے فرمایا: "جنت ماؤں کے قدموں تلے ہے۔" والدین کو اف تک نہ کہو، ان کی بات مانو، ان کی خدمت کرو۔ یہی سب سے بڑی عبادت ہے۔ انکی زندگی میں ان کو خوش رکھو اور وفات کے بعد ان کے لیے دعا کرتے رہو۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۳</div>
-      <div class="article-info">
-        <h4>صبر و شکر — مومن کی صفت</h4>
-        <p>تکالیف میں صبر اور نعمتوں پر شکر کی اہمیت و فضیلت</p>
-      </div>
-      <div class="article-arrow">←</div>
+    <div class="content-card">
+      <span class="ref-badge">اخلاق — ۳</span>
+      <h3>صبر — مومن کی سب سے بڑی صفت</h3>
+      <div class="arabic-quote">إِنَّ اللَّهَ مَعَ الصَّابِرِينَ</div>
+      <p>اللہ تعالیٰ صبر کرنے والوں کے ساتھ ہے۔ مصیبت میں صبر، نعمت میں شکر اور گناہ سے باز رہنا — یہ تینوں مومن کی شان ہے۔ نبی ﷺ نے فرمایا: "مومن کا معاملہ عجیب ہے، اس کا سارا کام اس کے لیے خیر ہے — خوشی میں شکر اور تکلیف میں صبر۔"</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۴</div>
-      <div class="article-info">
-        <h4>توبہ اور استغفار — گناہوں سے پاکی</h4>
-        <p>توبہ کی شرائط، اہمیت اور فوائد — راہ نجات</p>
-      </div>
-      <div class="article-arrow">←</div>
-    </div>
-    <div class="article-item">
-      <div class="article-num">۵</div>
-      <div class="article-info">
-        <h4>حسد اور بغض سے بچنا</h4>
-        <p>دل کی بیماریوں سے نجات اور قلبی سکون کا راستہ</p>
-      </div>
-      <div class="article-arrow">←</div>
+    <div class="content-card">
+      <span class="ref-badge">اخلاق — ۴</span>
+      <h3>توبہ — گناہوں سے پاکی کا راستہ</h3>
+      <div class="arabic-quote">إِنَّ اللَّهَ يُحِبُّ التَّوَّابِينَ وَيُحِبُّ الْمُتَطَهِّرِينَ</div>
+      <p>اللہ توبہ کرنے والوں کو بہت پسند کرتا ہے۔ توبہ کی شرائط: گناہ چھوڑنا، پچھتانا اور آئندہ نہ کرنے کا عزم۔ کسی کا حق مارا ہو تو واپس کرنا۔ نبی ﷺ نے فرمایا: "اللہ تعالیٰ رات کو ہاتھ پھیلاتا ہے تاکہ دن کا گنہگار توبہ کرے۔"</p>
     </div>
   </div>
 
-  <!-- Seerat Section -->
-  <div class="section-title"><span class="ar">السيرة النبوية</span><h2>سیرتِ نبویؐ</h2></div>
-  <div class="divider"><span class="ornament">❖</span></div>
-
-  <div class="article-list" style="margin-bottom:3rem;">
-    <div class="article-item">
-      <div class="article-num">۱</div>
-      <div class="article-info">
-        <h4>ولادتِ مبارکہ — نبی ﷺ کی پیدائش</h4>
-        <p>ولادت، بچپن اور نبوت سے پہلے کی زندگی کا تفصیلی بیان</p>
-      </div>
-      <div class="article-arrow">←</div>
+  <!-- SEERAT -->
+  <div id="tab-seerat" class="tab-content">
+    <div class="section-title"><span class="ar">السيرة النبوية</span><h2>سیرتِ نبویؐ</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div class="content-card">
+      <span class="ref-badge">سیرت — ۱</span>
+      <h3>ولادتِ مبارکہ</h3>
+      <p>نبی کریم ﷺ ۱۲ ربیع الاول، ۵۷۰ء کو مکہ مکرمہ میں پیدا ہوئے۔ والد حضرت عبداللہ آپ کی پیدائش سے پہلے وفات پا چکے تھے۔ والدہ حضرت آمنہ بنت وہب تھیں جو آپ کے بچپن میں وفات پا گئیں۔ دادا حضرت عبدالمطلب نے پرورش کی۔ آپ کا بچپن انتہائی پاکیزہ اور نیک تھا — لوگ آپ کو "الصادق الامین" کہتے تھے۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۲</div>
-      <div class="article-info">
-        <h4>نبی ﷺ کے اخلاق و کردار</h4>
-        <p>آپ ﷺ کی سادگی، رحم دلی، عفو و درگزر اور انسان دوستی</p>
-      </div>
-      <div class="article-arrow">←</div>
+    <div class="content-card">
+      <span class="ref-badge">سیرت — ۲</span>
+      <h3>نبی ﷺ کے اخلاق</h3>
+      <div class="arabic-quote">وَإِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٍ</div>
+      <p>اللہ نے فرمایا: "آپ یقیناً عظیم اخلاق کے مالک ہیں۔" نبی ﷺ سب سے زیادہ سخی، سب سے زیادہ بہادر، سب سے زیادہ رحم دل تھے۔ آپ نے کبھی کسی خادم کو نہیں مارا، کبھی کوئی بری بات نہیں کہی۔ ہمیشہ مسکراتے، سلام میں پہل کرتے، غریب کے ساتھ بیٹھتے۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۳</div>
-      <div class="article-info">
-        <h4>غزوات — اسلامی جنگیں</h4>
-        <p>بدر، احد، خندق اور دیگر غزوات کا مختصر تذکرہ</p>
-      </div>
-      <div class="article-arrow">←</div>
+    <div class="content-card">
+      <span class="ref-badge">سیرت — ۳</span>
+      <h3>صلح حدیبیہ — رحمت کا درس</h3>
+      <p>صلح حدیبیہ میں نبی ﷺ نے بظاہر مسلمانوں کے خلاف شرائط قبول کیں لیکن اللہ نے اسے "فتح مبین" قرار دیا۔ اس سے ہمیں صبر، حکمت اور اللہ پر بھروسے کا درس ملتا ہے۔ نبی ﷺ کا ہر فیصلہ حکمت پر مبنی تھا۔</p>
     </div>
   </div>
 
-  <button class="more-btn">تمام مضامین دیکھیں ←</button>
+  <!-- TAZKIYA -->
+  <div id="tab-tazkiya" class="tab-content">
+    <div class="section-title"><span class="ar">تزكية النفس</span><h2>تزکیہ نفس</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div class="content-card">
+      <span class="ref-badge">تزکیہ — ۱</span>
+      <h3>دل کی بیماریاں اور علاج</h3>
+      <div class="arabic-quote">أَلَا وَإِنَّ فِي الْجَسَدِ مُضْغَةً إِذَا صَلَحَتْ صَلَحَ الْجَسَدُ كُلُّهُ</div>
+      <p>دل کی بیماریاں: حسد، کینہ، تکبر، ریاکاری، دنیا کی محبت۔ علاج: قرآن کی تلاوت، ذکر اللہ، نیک صحبت، تہجد کی نماز، کم کھانا، کم بولنا۔ امام غزالیؒ نے فرمایا: دل کو پاک کرنا سب سے بڑی عبادت ہے۔</p>
+    </div>
+    <div class="content-card">
+      <span class="ref-badge">تزکیہ — ۲</span>
+      <h3>تہجد — راتوں کی عبادت</h3>
+      <div class="arabic-quote">وَمِنَ اللَّيْلِ فَتَهَجَّدْ بِهِ نَافِلَةً لَّكَ</div>
+      <p>تہجد کی نماز اللہ سے قریب کرتی ہے۔ نبی ﷺ اتنا نماز پڑھتے کہ پاؤں سوج جاتے۔ رات کے آخری حصے میں اللہ آسمان دنیا پر نازل ہوتا ہے اور پوچھتا ہے: "کون ہے جو مجھ سے مانگے، میں دوں؟" صبح ۳ بجے اٹھ کر تہجد پڑھیں — زندگی بدل جائے گی۔</p>
+    </div>
+  </div>
+
+  <!-- KHANDAN -->
+  <div id="tab-khandan" class="tab-content">
+    <div class="section-title"><span class="ar">الحياة الأسرية</span><h2>خاندانی زندگی</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div class="content-card">
+      <span class="ref-badge">خاندان — ۱</span>
+      <h3>شوہر اور بیوی کے حقوق</h3>
+      <div class="arabic-quote">وَعَاشِرُوهُنَّ بِالْمَعْرُوفِ</div>
+      <p>نبی ﷺ نے فرمایا: "تم میں سب سے اچھا وہ ہے جو اپنے گھر والوں کے لیے اچھا ہو۔" شوہر پر بیوی کا نفقہ، لباس، رہائش فرض ہے۔ بیوی پر شوہر کی اطاعت اور گھر کی حفاظت فرض ہے۔ دونوں ایک دوسرے کے لباس ہیں۔</p>
+    </div>
+    <div class="content-card">
+      <span class="ref-badge">خاندان — ۲</span>
+      <h3>بچوں کی اسلامی تربیت</h3>
+      <p>بچوں کو سب سے پہلے کلمہ سکھائیں۔ سات سال کی عمر میں نماز کا حکم دیں۔ دس سال میں سختی سے کہیں۔ قرآن حفظ کروائیں۔ نیک صحبت فراہم کریں۔ موبائل کا غلط استعمال روکیں۔ بچے کی پہلی مدرسہ ماں کی گود ہے۔</p>
+    </div>
+  </div>
+
+  <!-- MUASHRA -->
+  <div id="tab-muashra" class="tab-content">
+    <div class="section-title"><span class="ar">المسائل الاجتماعية</span><h2>معاشرتی مسائل</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+    <div class="content-card">
+      <span class="ref-badge">معاشرہ — ۱</span>
+      <h3>پڑوسی کے حقوق</h3>
+      <div class="arabic-quote">وَالْجَارِ ذِي الْقُرْبَىٰ وَالْجَارِ الْجُنُبِ</div>
+      <p>نبی ﷺ نے فرمایا: "جبریل مجھے پڑوسی کے حقوق کے بارے میں اتنا تاکید کرتے رہے کہ میں سمجھا پڑوسی وارث بن جائے گا۔" پڑوسی کو تکلیف نہ دیں، اس کی مدد کریں، اس کی خوشی میں شریک ہوں، اس کی بیماری میں عیادت کریں۔</p>
+    </div>
+    <div class="content-card">
+      <span class="ref-badge">معاشرہ — ۲</span>
+      <h3>موبائل اور سوشل میڈیا کا اسلامی نقطہ نظر</h3>
+      <p>موبائل فون نعمت بھی ہے، آزمائش بھی۔ حرام چیزیں دیکھنا، غیبت کرنا، جھوٹ پھیلانا — سب حرام ہے خواہ موبائل پر ہو یا آمنے سامنے۔ موبائل کا استعمال نماز میں خلل نہ ڈالے۔ سونے سے پہلے موبائل بند کریں اور ذکر میں مشغول ہوں۔</p>
+    </div>
+  </div>
 </section>
 
 <footer>
   <div class="footer-logo">☪️ نورِ اسلام</div>
   <p class="footer-tagline">اسلامی تعلیمات کی روشنی میں آپ کی رہنمائی</p>
   <div class="footer-links">
-    <a href="quran.html">قرآن پاک</a>
-    <a href="hadees.html">احادیث</a>
-    <a href="tabligh.html">تبلیغ</a>
-    <a href="fiqh.html">فقہی مسائل</a>
-    <a href="namaz.html">نماز اوقات</a>
-    <a href="names.html">اسلامی نام</a>
+    <a href="quran.html">قرآن پاک</a><a href="hadees.html">احادیث</a>
+    <a href="tabligh.html">تبلیغ</a><a href="fiqh.html">فقہی مسائل</a>
+    <a href="namaz.html">نماز اوقات</a><a href="names.html">اسلامی نام</a>
   </div>
   <div class="footer-copy">© 2026 نورِ اسلام | جملہ حقوق محفوظ ہیں</div>
 </footer>
 <script src="main.js"></script>
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 200);
+}
+</script>
 </body>
 </html>

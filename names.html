@@ -6,16 +6,28 @@
 <title>نورِ اسلام — اسلامی بچوں کے نام</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .filter-bar { display:flex; gap:0.8rem; flex-wrap:wrap; margin-bottom:1.5rem; justify-content:center; }
+  .f-btn { background:rgba(29,67,50,0.3); border:1px solid rgba(201,168,76,0.2); color:var(--cream); padding:0.55rem 1.2rem; border-radius:25px; cursor:pointer; font-family:inherit; font-size:0.88rem; transition:all 0.3s; }
+  .f-btn.active, .f-btn:hover { background:rgba(201,168,76,0.15); border-color:var(--gold); color:var(--gold); }
+  .names-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(195px,1fr)); gap:1rem; }
+  .name-card { background:linear-gradient(135deg,rgba(29,67,50,0.35),rgba(13,27,18,0.5)); border:1px solid rgba(201,168,76,0.15); border-radius:12px; padding:1.3rem; transition:all 0.3s; cursor:pointer; }
+  .name-card:hover { border-color:var(--gold); transform:translateY(-3px); box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+  .name-arabic { font-family:'Amiri',serif; font-size:1.5rem; color:var(--gold); margin-bottom:0.3rem; }
+  .name-urdu { font-size:1rem; color:var(--cream); margin-bottom:0.2rem; }
+  .name-meaning { font-size:0.8rem; color:rgba(253,246,227,0.55); line-height:1.6; }
+  .name-gender { display:inline-block; font-size:0.7rem; margin-top:0.5rem; padding:0.2rem 0.6rem; border-radius:10px; }
+  .male { background:rgba(0,100,200,0.2); color:#6BB5FF; border:1px solid rgba(0,100,200,0.3); }
+  .female { background:rgba(200,0,100,0.2); color:#FF9FD3; border:1px solid rgba(200,0,100,0.3); }
+  .no-result { text-align:center; padding:3rem; color:rgba(253,246,227,0.5); grid-column:1/-1; }
+</style>
 </head>
 <body>
-<div class="geo-bg"></div>
-<div class="geo-pattern"></div>
-<div class="ticker">
-  <div class="ticker-inner">
-    <span>👶 إِنَّ أَحَبَّ أَسْمَائِكُمْ إِلَى اللَّهِ عَبْدُ اللَّهِ وَعَبْدُ الرَّحْمَنِ — اللہ کو سب سے پسندیدہ نام عبداللہ اور عبدالرحمٰن ہیں</span>
-    <span>👶 إِنَّ أَحَبَّ أَسْمَائِكُمْ إِلَى اللَّهِ عَبْدُ اللَّهِ وَعَبْدُ الرَّحْمَنِ — اللہ کو سب سے پسندیدہ نام عبداللہ اور عبدالرحمٰن ہیں</span>
-  </div>
-</div>
+<div class="geo-bg"></div><div class="geo-pattern"></div>
+<div class="ticker"><div class="ticker-inner">
+  <span>👶 إِنَّ أَحَبَّ أَسْمَائِكُمْ إِلَى اللَّهِ عَبْدُ اللَّهِ وَعَبْدُ الرَّحْمَنِ</span>
+  <span id="ticker-namaz">🕌 نماز اوقات لوڈ ہو رہے ہیں...</span>
+</div></div>
 <header>
   <div class="header-top">
     <div class="logo-section">
@@ -29,15 +41,10 @@
     </div>
   </div>
   <nav>
-    <a href="index.html">🏠 ہوم</a>
-    <a href="quran.html">📖 قرآن</a>
-    <a href="hadees.html">📜 حدیث</a>
-    <a href="tabligh.html">🕌 تبلیغ</a>
-    <a href="islahi.html">✍️ اصلاحی مضامین</a>
-    <a href="fiqh.html">⚖️ فقہی مسائل</a>
-    <a href="namaz.html">🕋 نماز اوقات</a>
-    <a href="calendar.html">📅 اسلامی تقویم</a>
-    <a href="names.html" class="active">👶 اسلامی نام</a>
+    <a href="index.html">🏠 ہوم</a><a href="quran.html">📖 قرآن</a><a href="hadees.html">📜 حدیث</a>
+    <a href="tabligh.html">🕌 تبلیغ</a><a href="islahi.html">✍️ اصلاحی مضامین</a>
+    <a href="fiqh.html">⚖️ فقہی مسائل</a><a href="namaz.html">🕋 نماز اوقات</a>
+    <a href="calendar.html">📅 اسلامی تقویم</a><a href="names.html" class="active">👶 اسلامی نام</a>
   </nav>
 </header>
 
@@ -48,100 +55,157 @@
 </div>
 
 <section class="main-section">
-  <div class="search-bar" style="margin-bottom:2rem;">
-    <input type="text" placeholder="نام تلاش کریں...">
+  <div class="search-bar" style="margin-bottom:1.5rem;">
+    <input type="text" id="name-search" placeholder="نام تلاش کریں..." oninput="filterNames()">
     <button class="search-btn">🔍</button>
   </div>
 
-  <!-- Gender Filter -->
-  <div class="names-filter">
-    <button class="filter-btn active">👶 تمام نام</button>
-    <button class="filter-btn">👦 لڑکوں کے نام</button>
-    <button class="filter-btn">👧 لڑکیوں کے نام</button>
+  <div class="filter-bar" id="gender-filter">
+    <button class="f-btn active" onclick="setGender('all',this)">👶 تمام نام</button>
+    <button class="f-btn" onclick="setGender('male',this)">👦 لڑکوں کے نام</button>
+    <button class="f-btn" onclick="setGender('female',this)">👧 لڑکیوں کے نام</button>
   </div>
 
-  <!-- Alphabet Filter -->
-  <div class="names-filter" style="margin-bottom:2.5rem;">
-    <button class="filter-btn">ا</button>
-    <button class="filter-btn">ب</button>
-    <button class="filter-btn">ت</button>
-    <button class="filter-btn">ج</button>
-    <button class="filter-btn">ح</button>
-    <button class="filter-btn">خ</button>
-    <button class="filter-btn">ر</button>
-    <button class="filter-btn">ز</button>
-    <button class="filter-btn">س</button>
-    <button class="filter-btn">ع</button>
-    <button class="filter-btn">ف</button>
-    <button class="filter-btn">م</button>
-    <button class="filter-btn">ن</button>
-    <button class="filter-btn">ی</button>
+  <div class="filter-bar" id="alpha-filter">
+    <button class="f-btn active" onclick="setAlpha('all',this)">سب</button>
+    <button class="f-btn" onclick="setAlpha('ا',this)">ا</button>
+    <button class="f-btn" onclick="setAlpha('ب',this)">ب</button>
+    <button class="f-btn" onclick="setAlpha('ت',this)">ت</button>
+    <button class="f-btn" onclick="setAlpha('ح',this)">ح</button>
+    <button class="f-btn" onclick="setAlpha('خ',this)">خ</button>
+    <button class="f-btn" onclick="setAlpha('ر',this)">ر</button>
+    <button class="f-btn" onclick="setAlpha('ز',this)">ز</button>
+    <button class="f-btn" onclick="setAlpha('س',this)">س</button>
+    <button class="f-btn" onclick="setAlpha('ص',this)">ص</button>
+    <button class="f-btn" onclick="setAlpha('ع',this)">ع</button>
+    <button class="f-btn" onclick="setAlpha('ف',this)">ف</button>
+    <button class="f-btn" onclick="setAlpha('م',this)">م</button>
+    <button class="f-btn" onclick="setAlpha('ن',this)">ن</button>
+    <button class="f-btn" onclick="setAlpha('ہ',this)">ہ</button>
+    <button class="f-btn" onclick="setAlpha('ی',this)">ی</button>
   </div>
 
-  <!-- Boys Names -->
-  <div class="section-title"><span class="ar">أسماء الأولاد</span><h2>لڑکوں کے نام</h2></div>
-  <div class="divider"><span class="ornament">❖</span></div>
-  <div class="names-grid" style="margin-bottom:3rem;">
-    <div class="name-card"><div class="name-arabic">مُحَمَّد</div><div class="name-urdu">محمد</div><div class="name-meaning">تعریف کیا گیا، ستائش کیا گیا</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">أَحْمَد</div><div class="name-urdu">احمد</div><div class="name-meaning">سب سے زیادہ تعریف کیا گیا</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">عَبْدُاللّٰه</div><div class="name-urdu">عبداللہ</div><div class="name-meaning">اللہ کا بندہ</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">عَبْدُالرَّحْمٰن</div><div class="name-urdu">عبدالرحمٰن</div><div class="name-meaning">رحمٰن کا بندہ</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">عُمَر</div><div class="name-urdu">عمر</div><div class="name-meaning">زندگی، آباد کرنے والا</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">عُثْمَان</div><div class="name-urdu">عثمان</div><div class="name-meaning">بچہ سانپ، مضبوط</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">عَلِي</div><div class="name-urdu">علی</div><div class="name-meaning">بلند، اعلیٰ</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">إِبْرَاهِيم</div><div class="name-urdu">ابراہیم</div><div class="name-meaning">باپ کا دوست، قوموں کا باپ</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">يُوسُف</div><div class="name-urdu">یوسف</div><div class="name-meaning">اللہ بڑھائے، خوبصورت</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">إِسْمَاعِيل</div><div class="name-urdu">اسماعیل</div><div class="name-meaning">اللہ سنتا ہے</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">حَمْزَة</div><div class="name-urdu">حمزہ</div><div class="name-meaning">شیر، مضبوط</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">زَيْد</div><div class="name-urdu">زید</div><div class="name-meaning">بڑھنا، ترقی</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">طَلْحَة</div><div class="name-urdu">طلحہ</div><div class="name-meaning">ایک درخت کا نام</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">سَعْد</div><div class="name-urdu">سعد</div><div class="name-meaning">خوش نصیب، مبارک</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">نُوح</div><div class="name-urdu">نوح</div><div class="name-meaning">آرام، سکون</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">صَالِح</div><div class="name-urdu">صالح</div><div class="name-meaning">نیک، درست</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">بِلَال</div><div class="name-urdu">بلال</div><div class="name-meaning">پانی، تازگی</div><span class="name-gender male">لڑکا</span></div>
-    <div class="name-card"><div class="name-arabic">أَنَس</div><div class="name-urdu">انس</div><div class="name-meaning">محبت، قرب</div><span class="name-gender male">لڑکا</span></div>
-  </div>
-
-  <!-- Girls Names -->
-  <div class="section-title"><span class="ar">أسماء البنات</span><h2>لڑکیوں کے نام</h2></div>
-  <div class="divider"><span class="ornament">❖</span></div>
-  <div class="names-grid" style="margin-bottom:3rem;">
-    <div class="name-card"><div class="name-arabic">فَاطِمَة</div><div class="name-urdu">فاطمہ</div><div class="name-meaning">دودھ چھڑانے والی، پاک</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">عَائِشَة</div><div class="name-urdu">عائشہ</div><div class="name-meaning">زندہ دل، خوشحال</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">خَدِيجَة</div><div class="name-urdu">خدیجہ</div><div class="name-meaning">وقت سے پہلے پیدا ہونے والی</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">مَرْيَم</div><div class="name-urdu">مریم</div><div class="name-meaning">پاکیزہ، عبادت گزار</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">زَيْنَب</div><div class="name-urdu">زینب</div><div class="name-meaning">خوشبودار، خوبصورت</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">أُمُّ كُلْثُوم</div><div class="name-urdu">ام کلثوم</div><div class="name-meaning">گول رخساروں والی</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">سُمَيَّة</div><div class="name-urdu">سمیہ</div><div class="name-meaning">بلند مرتبہ</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">حَفْصَة</div><div class="name-urdu">حفصہ</div><div class="name-meaning">شیرنی کا بچہ</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">أَسْمَاء</div><div class="name-urdu">اسماء</div><div class="name-meaning">ناموں والی، بلند</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">رُقَيَّة</div><div class="name-urdu">رقیہ</div><div class="name-meaning">بلند ہونے والی</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">صَفِيَّة</div><div class="name-urdu">صفیہ</div><div class="name-meaning">پاک، صاف</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">نُورَة</div><div class="name-urdu">نورہ</div><div class="name-meaning">روشنی والی</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">رَيْحَانَة</div><div class="name-urdu">ریحانہ</div><div class="name-meaning">خوشبودار پھول</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">أَمِيرَة</div><div class="name-urdu">امیرہ</div><div class="name-meaning">شہزادی، سردار</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">هَاجَر</div><div class="name-urdu">ہاجرہ</div><div class="name-meaning">ہجرت کرنے والی</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">لَيْلَى</div><div class="name-urdu">لیلیٰ</div><div class="name-meaning">رات، تاریکی</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">سَارَة</div><div class="name-urdu">سارہ</div><div class="name-meaning">خوشی، سرور</div><span class="name-gender female">لڑکی</span></div>
-    <div class="name-card"><div class="name-arabic">إِيمَان</div><div class="name-urdu">ایمان</div><div class="name-meaning">ایمان، یقین</div><span class="name-gender female">لڑکی</span></div>
-  </div>
-
-  <button class="more-btn">مزید نام دیکھیں ←</button>
+  <div class="names-grid" id="names-grid"></div>
 </section>
 
 <footer>
   <div class="footer-logo">☪️ نورِ اسلام</div>
   <p class="footer-tagline">اسلامی تعلیمات کی روشنی میں آپ کی رہنمائی</p>
   <div class="footer-links">
-    <a href="quran.html">قرآن پاک</a>
-    <a href="hadees.html">احادیث</a>
-    <a href="tabligh.html">تبلیغ</a>
-    <a href="fiqh.html">فقہی مسائل</a>
-    <a href="namaz.html">نماز اوقات</a>
-    <a href="names.html">اسلامی نام</a>
+    <a href="quran.html">قرآن پاک</a><a href="hadees.html">احادیث</a>
+    <a href="tabligh.html">تبلیغ</a><a href="fiqh.html">فقہی مسائل</a>
+    <a href="namaz.html">نماز اوقات</a><a href="names.html">اسلامی نام</a>
   </div>
   <div class="footer-copy">© 2026 نورِ اسلام | جملہ حقوق محفوظ ہیں</div>
 </footer>
 <script src="main.js"></script>
+<script>
+const allNames = [
+  // BOYS
+  {ar:'مُحَمَّد',ur:'محمد',meaning:'تعریف کیا گیا، ستائش کیا گیا',gender:'male',alpha:'م'},
+  {ar:'أَحْمَد',ur:'احمد',meaning:'سب سے زیادہ تعریف کیا گیا',gender:'male',alpha:'ا'},
+  {ar:'عَبْدُاللّٰه',ur:'عبداللہ',meaning:'اللہ کا بندہ — سب سے پسندیدہ نام',gender:'male',alpha:'ع'},
+  {ar:'عَبْدُالرَّحْمٰن',ur:'عبدالرحمٰن',meaning:'رحمٰن کا بندہ',gender:'male',alpha:'ع'},
+  {ar:'عُمَر',ur:'عمر',meaning:'زندگی، آباد کرنے والا',gender:'male',alpha:'ع'},
+  {ar:'عُثْمَان',ur:'عثمان',meaning:'پرندہ، مضبوط',gender:'male',alpha:'ع'},
+  {ar:'عَلِي',ur:'علی',meaning:'بلند، اعلیٰ، بزرگ',gender:'male',alpha:'ع'},
+  {ar:'إِبْرَاهِيم',ur:'ابراہیم',meaning:'قوموں کا باپ',gender:'male',alpha:'ا'},
+  {ar:'يُوسُف',ur:'یوسف',meaning:'اللہ بڑھائے',gender:'male',alpha:'ی'},
+  {ar:'إِسْمَاعِيل',ur:'اسماعیل',meaning:'اللہ سنتا ہے',gender:'male',alpha:'ا'},
+  {ar:'حَمْزَة',ur:'حمزہ',meaning:'شیر، بہادر',gender:'male',alpha:'ح'},
+  {ar:'زَيْد',ur:'زید',meaning:'بڑھنا، ترقی',gender:'male',alpha:'ز'},
+  {ar:'طَلْحَة',ur:'طلحہ',meaning:'پاکیزہ درخت',gender:'male',alpha:'ت'},
+  {ar:'سَعْد',ur:'سعد',meaning:'خوش نصیب، مبارک',gender:'male',alpha:'س'},
+  {ar:'نُوح',ur:'نوح',meaning:'آرام، سکون',gender:'male',alpha:'ن'},
+  {ar:'صَالِح',ur:'صالح',meaning:'نیک، درست',gender:'male',alpha:'ص'},
+  {ar:'بِلَال',ur:'بلال',meaning:'پانی، تازگی',gender:'male',alpha:'ب'},
+  {ar:'أَنَس',ur:'انس',meaning:'محبت، قرب، انسیت',gender:'male',alpha:'ا'},
+  {ar:'مُعَاذ',ur:'معاذ',meaning:'پناہ، محفوظ',gender:'male',alpha:'م'},
+  {ar:'سُفْيَان',ur:'سفیان',meaning:'تیز، چست',gender:'male',alpha:'س'},
+  {ar:'سَلْمَان',ur:'سلمان',meaning:'سلامت، محفوظ',gender:'male',alpha:'س'},
+  {ar:'نُعْمَان',ur:'نعمان',meaning:'خوشحالی، نعمت',gender:'male',alpha:'ن'},
+  {ar:'هَارُون',ur:'ہارون',meaning:'پہاڑ کی طرح مضبوط',gender:'male',alpha:'ہ'},
+  {ar:'يَحْيَى',ur:'یحییٰ',meaning:'زندگی پائے',gender:'male',alpha:'ی'},
+  {ar:'عِيسَى',ur:'عیسیٰ',meaning:'اللہ نجات دے',gender:'male',alpha:'ع'},
+  {ar:'مُوسَى',ur:'موسیٰ',meaning:'پانی سے نکالا گیا',gender:'male',alpha:'م'},
+  {ar:'اَدَم',ur:'آدم',meaning:'زمین سے بنا، پہلا انسان',gender:'male',alpha:'ا'},
+  {ar:'اِدْرِيس',ur:'ادریس',meaning:'مطالعہ کرنے والا',gender:'male',alpha:'ا'},
+  {ar:'سُلَيْمَان',ur:'سلیمان',meaning:'سلامتی والا',gender:'male',alpha:'س'},
+  {ar:'دَاوُد',ur:'داؤد',meaning:'محبوب',gender:'male',alpha:'د'},
+  // GIRLS
+  {ar:'فَاطِمَة',ur:'فاطمہ',meaning:'دودھ چھڑانے والی، پاک',gender:'female',alpha:'ف'},
+  {ar:'عَائِشَة',ur:'عائشہ',meaning:'زندہ دل، خوشحال',gender:'female',alpha:'ع'},
+  {ar:'خَدِيجَة',ur:'خدیجہ',meaning:'وقت سے پہلے پیدا ہونے والی',gender:'female',alpha:'خ'},
+  {ar:'مَرْيَم',ur:'مریم',meaning:'پاکیزہ، عبادت گزار',gender:'female',alpha:'م'},
+  {ar:'زَيْنَب',ur:'زینب',meaning:'خوشبودار، خوبصورت',gender:'female',alpha:'ز'},
+  {ar:'سُمَيَّة',ur:'سمیہ',meaning:'بلند مرتبہ',gender:'female',alpha:'س'},
+  {ar:'حَفْصَة',ur:'حفصہ',meaning:'شیرنی کا بچہ',gender:'female',alpha:'ح'},
+  {ar:'أَسْمَاء',ur:'اسماء',meaning:'ناموں والی، بلند',gender:'female',alpha:'ا'},
+  {ar:'رُقَيَّة',ur:'رقیہ',meaning:'بلند ہونے والی',gender:'female',alpha:'ر'},
+  {ar:'صَفِيَّة',ur:'صفیہ',meaning:'پاک، صاف، خالص',gender:'female',alpha:'ص'},
+  {ar:'نُورَة',ur:'نورہ',meaning:'روشنی والی',gender:'female',alpha:'ن'},
+  {ar:'رَيْحَانَة',ur:'ریحانہ',meaning:'خوشبودار پھول',gender:'female',alpha:'ر'},
+  {ar:'أَمِيرَة',ur:'امیرہ',meaning:'شہزادی، سردار',gender:'female',alpha:'ا'},
+  {ar:'هَاجَر',ur:'ہاجرہ',meaning:'ہجرت کرنے والی',gender:'female',alpha:'ہ'},
+  {ar:'لَيْلَى',ur:'لیلیٰ',meaning:'رات، دل کو موہنے والی',gender:'female',alpha:'ل'},
+  {ar:'سَارَة',ur:'سارہ',meaning:'خوشی، سرور',gender:'female',alpha:'س'},
+  {ar:'إِيمَان',ur:'ایمان',meaning:'ایمان، یقین، اعتقاد',gender:'female',alpha:'ا'},
+  {ar:'نَدَى',ur:'ندیٰ',meaning:'شبنم، نرمی',gender:'female',alpha:'ن'},
+  {ar:'يَاسْمِين',ur:'یاسمین',meaning:'چمیلی کا پھول',gender:'female',alpha:'ی'},
+  {ar:'زَهْرَاء',ur:'زہراء',meaning:'چمکنے والی، روشن',gender:'female',alpha:'ز'},
+  {ar:'مَيْمُونَة',ur:'میمونہ',meaning:'مبارک، خوش قسمت',gender:'female',alpha:'م'},
+  {ar:'نَفِيسَة',ur:'نفیسہ',meaning:'قیمتی، نفیس',gender:'female',alpha:'ن'},
+  {ar:'بُشْرَى',ur:'بشریٰ',meaning:'خوشخبری',gender:'female',alpha:'ب'},
+  {ar:'صَبَاح',ur:'صباح',meaning:'صبح، روشنی',gender:'female',alpha:'ص'},
+  {ar:'حَنَان',ur:'حنان',meaning:'محبت، شفقت',gender:'female',alpha:'ح'},
+  {ar:'رَنَا',ur:'رنا',meaning:'خوبصورت، دیکھنے میں اچھی',gender:'female',alpha:'ر'},
+  {ar:'دِينَا',ur:'دینا',meaning:'دین والی، دیندار',gender:'female',alpha:'د'},
+  {ar:'سَلْمَى',ur:'سلمیٰ',meaning:'سلامت، محفوظ',gender:'female',alpha:'س'},
+  {ar:'فَرَح',ur:'فرح',meaning:'خوشی، مسرت',gender:'female',alpha:'ف'},
+  {ar:'هِنْد',ur:'ہند',meaning:'ایک قدیم نام',gender:'female',alpha:'ہ'},
+];
+
+let currentGender = 'all';
+let currentAlpha = 'all';
+
+function setGender(g, btn) {
+  currentGender = g;
+  document.querySelectorAll('#gender-filter .f-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderNames();
+}
+
+function setAlpha(a, btn) {
+  currentAlpha = a;
+  document.querySelectorAll('#alpha-filter .f-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderNames();
+}
+
+function filterNames() { renderNames(); }
+
+function renderNames() {
+  const q = document.getElementById('name-search').value.trim();
+  let list = allNames;
+  if(currentGender !== 'all') list = list.filter(n => n.gender === currentGender);
+  if(currentAlpha !== 'all') list = list.filter(n => n.alpha === currentAlpha);
+  if(q) list = list.filter(n => n.ur.includes(q) || n.ar.includes(q) || n.meaning.includes(q));
+
+  const grid = document.getElementById('names-grid');
+  if(!list.length) {
+    grid.innerHTML = '<div class="no-result">کوئی نام نہیں ملا</div>';
+    return;
+  }
+  grid.innerHTML = list.map(n => `
+    <div class="name-card">
+      <div class="name-arabic">${n.ar}</div>
+      <div class="name-urdu">${n.ur}</div>
+      <div class="name-meaning">${n.meaning}</div>
+      <span class="name-gender ${n.gender}">${n.gender==='male'?'👦 لڑکا':'👧 لڑکی'}</span>
+    </div>`).join('');
+}
+
+renderNames();
+</script>
 </body>
 </html>

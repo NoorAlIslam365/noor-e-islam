@@ -6,16 +6,26 @@
 <title>نورِ اسلام — تبلیغ و دعوت</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  .tab-nav { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; justify-content:center; }
+  .tab-nav button { background:rgba(29,67,50,0.3); border:1px solid rgba(201,168,76,0.2); color:var(--cream); padding:0.6rem 1.2rem; border-radius:8px; cursor:pointer; font-family:inherit; font-size:0.9rem; transition:all 0.3s; }
+  .tab-nav button.active, .tab-nav button:hover { background:rgba(201,168,76,0.15); border-color:var(--gold); color:var(--gold); }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+  .content-card { background:linear-gradient(135deg,rgba(29,67,50,0.4),rgba(13,27,18,0.6)); border:1px solid rgba(201,168,76,0.18); border-radius:16px; padding:2rem; margin-bottom:1.5rem; transition:all 0.3s; }
+  .content-card:hover { border-color:rgba(201,168,76,0.4); }
+  .content-card h3 { color:var(--gold-light); font-size:1.1rem; margin-bottom:0.8rem; }
+  .content-card p { color:rgba(253,246,227,0.7); font-size:0.95rem; line-height:2; }
+  .content-card .arabic-quote { font-family:'Amiri',serif; font-size:1.4rem; color:var(--gold); line-height:2.2; margin-bottom:0.8rem; }
+  .sifat-num { display:inline-flex; align-items:center; justify-content:center; width:35px; height:35px; border-radius:50%; background:var(--gold); color:var(--dark); font-weight:700; font-size:0.9rem; margin-left:0.8rem; float:right; direction:ltr; }
+</style>
 </head>
 <body>
-<div class="geo-bg"></div>
-<div class="geo-pattern"></div>
-<div class="ticker">
-  <div class="ticker-inner">
-    <span>🕌 ادْعُ إِلَىٰ سَبِيلِ رَبِّكَ بِالْحِكْمَةِ وَالْمَوْعِظَةِ الْحَسَنَةِ — اپنے رب کی راہ کی طرف حکمت اور اچھی نصیحت سے بلاؤ</span>
-    <span>🕌 ادْعُ إِلَىٰ سَبِيلِ رَبِّكَ بِالْحِكْمَةِ وَالْمَوْعِظَةِ الْحَسَنَةِ — اپنے رب کی راہ کی طرف حکمت اور اچھی نصیحت سے بلاؤ</span>
-  </div>
-</div>
+<div class="geo-bg"></div><div class="geo-pattern"></div>
+<div class="ticker"><div class="ticker-inner">
+  <span>🕌 ادْعُ إِلَىٰ سَبِيلِ رَبِّكَ بِالْحِكْمَةِ وَالْمَوْعِظَةِ الْحَسَنَةِ</span>
+  <span id="ticker-namaz">🕌 نماز اوقات لوڈ ہو رہے ہیں...</span>
+</div></div>
 <header>
   <div class="header-top">
     <div class="logo-section">
@@ -29,15 +39,10 @@
     </div>
   </div>
   <nav>
-    <a href="index.html">🏠 ہوم</a>
-    <a href="quran.html">📖 قرآن</a>
-    <a href="hadees.html">📜 حدیث</a>
-    <a href="tabligh.html" class="active">🕌 تبلیغ</a>
-    <a href="islahi.html">✍️ اصلاحی مضامین</a>
-    <a href="fiqh.html">⚖️ فقہی مسائل</a>
-    <a href="namaz.html">🕋 نماز اوقات</a>
-    <a href="calendar.html">📅 اسلامی تقویم</a>
-    <a href="names.html">👶 اسلامی نام</a>
+    <a href="index.html">🏠 ہوم</a><a href="quran.html">📖 قرآن</a><a href="hadees.html">📜 حدیث</a>
+    <a href="tabligh.html" class="active">🕌 تبلیغ</a><a href="islahi.html">✍️ اصلاحی مضامین</a>
+    <a href="fiqh.html">⚖️ فقہی مسائل</a><a href="namaz.html">🕋 نماز اوقات</a>
+    <a href="calendar.html">📅 اسلامی تقویم</a><a href="names.html">👶 اسلامی نام</a>
   </nav>
 </header>
 
@@ -48,127 +53,159 @@
 </div>
 
 <section class="main-section">
-  <div class="content-tabs" style="justify-content:center; margin-bottom:2rem;">
-    <button class="tab-btn active">فضائل اعمال</button>
-    <button class="tab-btn">چھ صفات</button>
-    <button class="tab-btn">تبلیغی بیانات</button>
-    <button class="tab-btn">گشت کا طریقہ</button>
-    <button class="tab-btn">تبلیغی نصاب</button>
+  <div class="tab-nav">
+    <button class="active" onclick="showTab('sifaat',this)">چھ صفات</button>
+    <button onclick="showTab('fazail',this)">فضائل اعمال</button>
+    <button onclick="showTab('bayan',this)">تبلیغی بیانات</button>
+    <button onclick="showTab('gasht',this)">گشت کا طریقہ</button>
   </div>
 
-  <!-- Six Sifaat -->
-  <div class="section-title"><span class="ar">الصفات الست</span><h2>چھ بنیادی صفات</h2></div>
-  <div class="divider"><span class="ornament">❖</span></div>
+  <!-- CHE SIFAAT -->
+  <div id="tab-sifaat" class="tab-content active">
+    <div class="section-title"><span class="ar">الصفات الست</span><h2>چھ بنیادی صفات</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
 
-  <div class="cards-grid" style="margin-bottom:3rem;">
-    <div class="card">
-      <span class="card-icon">☝️</span>
-      <h3>کلمہ طیبہ</h3>
-      <p>لَا إِلٰهَ إِلَّا اللّٰهُ مُحَمَّدٌ رَّسُولُ اللّٰهِ — اللہ کے سوا کوئی معبود نہیں، محمدؐ اللہ کے رسول ہیں۔ یقین اور اعتقاد کے ساتھ کلمہ پڑھنا۔</p>
-      <div class="card-badge">پہلی صفت</div>
+    <div class="content-card">
+      <span class="sifat-num">۱</span>
+      <h3>☝️ کلمہ طیبہ — یقین اور اعتقاد</h3>
+      <div class="arabic-quote">لَا إِلٰهَ إِلَّا اللّٰهُ مُحَمَّدٌ رَّسُولُ اللّٰهِ</div>
+      <p>اللہ کے سوا کوئی معبود نہیں، محمد ﷺ اللہ کے رسول ہیں۔ اس کلمے کو دل کی گہرائی سے مانا جائے اور یقین کیا جائے کہ نفع اور نقصان، عزت اور ذلت، صرف اور صرف اللہ کے ہاتھ میں ہے۔ مخلوق سے مانگنا چھوڑ کر خالق سے مانگنے کی عادت ڈالیں۔</p>
     </div>
-    <div class="card">
-      <span class="card-icon">🕋</span>
-      <h3>نماز</h3>
-      <p>خشوع و خضوع کے ساتھ نماز پڑھنا جیسے نبی کریم ﷺ نے پڑھی۔ نماز مومن کی معراج ہے۔</p>
-      <div class="card-badge">دوسری صفت</div>
+
+    <div class="content-card">
+      <span class="sifat-num">۲</span>
+      <h3>🕋 نماز — خشوع و خضوع کے ساتھ</h3>
+      <div class="arabic-quote">أَقِيمُوا الصَّلَاةَ</div>
+      <p>پانچ وقت کی نماز خشوع و خضوع کے ساتھ پڑھنا جیسے نبی کریم ﷺ نے پڑھی۔ نماز میں اللہ کی یاد ہو، دل حاضر ہو، ہر رکن ادب کے ساتھ ادا ہو۔ نماز مومن کی معراج ہے اور اللہ سے براہ راست گفتگو کا ذریعہ ہے۔</p>
     </div>
-    <div class="card">
-      <span class="card-icon">📚</span>
-      <h3>علم و ذکر</h3>
-      <p>دین کا علم سیکھنا اور اللہ کا ذکر کرنا۔ ہر نماز کے بعد تسبیحات اور صبح شام کے اذکار۔</p>
-      <div class="card-badge">تیسری صفت</div>
+
+    <div class="content-card">
+      <span class="sifat-num">۳</span>
+      <h3>📚 علم و ذکر — دین سیکھنا اور یاد کرنا</h3>
+      <div class="arabic-quote">وَاذْكُرُوا اللَّهَ كَثِيرًا</div>
+      <p>دین کا علم حاصل کرنا اور اللہ کا ذکر کرنا۔ ہر نماز کے بعد تسبیحات (سبحان اللہ ۳۳، الحمدللہ ۳۳، اللہ اکبر ۳۴) پڑھنا۔ صبح شام کے اذکار پڑھنا۔ دین کی باتیں سیکھنا اور سکھانا۔</p>
     </div>
-    <div class="card">
-      <span class="card-icon">🤝</span>
-      <h3>اکرامِ مسلم</h3>
-      <p>ہر مسلمان کی عزت کرنا، اس کے ساتھ اچھا سلوک کرنا اور اس کے حقوق ادا کرنا۔</p>
-      <div class="card-badge">چوتھی صفت</div>
+
+    <div class="content-card">
+      <span class="sifat-num">۴</span>
+      <h3>🤝 اکرامِ مسلم — مسلمان بھائی کی عزت</h3>
+      <div class="arabic-quote">وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ</div>
+      <p>ہر مسلمان کی عزت کرنا، اس کے ساتھ اچھا سلوک کرنا، اس کے حقوق ادا کرنا اور اسے تکلیف نہ دینا۔ مسلمان بھائی کے لیے وہی پسند کرنا جو اپنے لیے پسند کرتے ہیں۔ آپس میں محبت اور بھائی چارہ رکھنا۔</p>
     </div>
-    <div class="card">
-      <span class="card-icon">✅</span>
-      <h3>تصحیحِ نیت</h3>
-      <p>ہر کام صرف اللہ کی رضا کے لیے کرنا، دنیا کی ہر طلب کو دل سے نکالنا اور آخرت کی فکر کرنا۔</p>
-      <div class="card-badge">پانچویں صفت</div>
+
+    <div class="content-card">
+      <span class="sifat-num">۵</span>
+      <h3>✅ تصحیحِ نیت — صرف اللہ کے لیے</h3>
+      <div class="arabic-quote">إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ</div>
+      <p>ہر کام صرف اللہ کی رضا کے لیے کرنا۔ دنیا کی محبت، شہرت اور ریاکاری سے بچنا۔ ہر عبادت میں نیت کو خالص رکھنا۔ آخرت کو دنیا پر ترجیح دینا اور دل سے دنیا کی طلب کو نکالنا۔</p>
     </div>
-    <div class="card">
-      <span class="card-icon">🌍</span>
-      <h3>دعوت و تبلیغ</h3>
-      <p>اللہ کے دین کی طرف لوگوں کو بلانا، خروج کرنا اور دوسروں تک دین پہنچانا۔</p>
-      <div class="card-badge">چھٹی صفت</div>
+
+    <div class="content-card">
+      <span class="sifat-num">۶</span>
+      <h3>🌍 دعوت و تبلیغ — اللہ کی طرف بلانا</h3>
+      <div class="arabic-quote">ادْعُ إِلَىٰ سَبِيلِ رَبِّكَ بِالْحِكْمَةِ</div>
+      <p>اللہ کے دین کی طرف لوگوں کو بلانا، گھر سے نکل کر دعوت دینا، خروج کرنا اور دوسروں تک دین پہنچانا۔ اپنی بات حکمت اور اچھی نصیحت سے کرنا۔ یہ انبیاء کا کام ہے جو امت محمدیہ کو سونپا گیا ہے۔</p>
     </div>
   </div>
 
-  <!-- Fazail Aamaal -->
-  <div class="section-title"><span class="ar">فضائل الأعمال</span><h2>فضائل اعمال</h2></div>
-  <div class="divider"><span class="ornament">❖</span></div>
+  <!-- FAZAIL AAMAAL -->
+  <div id="tab-fazail" class="tab-content">
+    <div class="section-title"><span class="ar">فضائل الأعمال</span><h2>فضائل اعمال</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
 
-  <div class="article-list">
-    <div class="article-item">
-      <div class="article-num">۱</div>
-      <div class="article-info">
-        <h4>فضائل نماز — نماز کی اہمیت و فضیلت</h4>
-        <p>قرآن و حدیث کی روشنی میں نماز کے فضائل اور اہمیت</p>
-      </div>
-      <div class="article-arrow">←</div>
+    <div class="content-card">
+      <h3>🕋 فضائل نماز</h3>
+      <div class="arabic-quote">إِنَّ الصَّلَاةَ تَنْهَىٰ عَنِ الْفَحْشَاءِ وَالْمُنكَرِ</div>
+      <p>نبی کریم ﷺ نے فرمایا: "نماز اور نماز کے درمیان جو گناہ ہوئے ان کا کفارہ ہے جب تک کبیرہ گناہ نہ کیے جائیں۔" پانچ وقت کی نماز ۵۰ نمازوں کے برابر ہے جو پہلے فرض تھیں۔ نماز مومن کی معراج ہے۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۲</div>
-      <div class="article-info">
-        <h4>فضائل قرآن — قرآن پڑھنے کی فضیلت</h4>
-        <p>قرآن کریم کی تلاوت کے فضائل اور برکات</p>
-      </div>
-      <div class="article-arrow">←</div>
+
+    <div class="content-card">
+      <h3>📖 فضائل قرآن</h3>
+      <div class="arabic-quote">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</div>
+      <p>نبی ﷺ نے فرمایا: "قرآن کا ایک حرف پڑھنے پر دس نیکیاں ملتی ہیں۔ الم ایک حرف نہیں بلکہ الف ایک حرف، لام ایک حرف اور میم ایک حرف ہے۔" قرآن قیامت کے دن اپنے پڑھنے والے کی شفاعت کرے گا۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۳</div>
-      <div class="article-info">
-        <h4>فضائل ذکر — اللہ کا ذکر کرنے کی فضیلت</h4>
-        <p>سبحان اللہ، الحمدللہ، اللہ اکبر کے فضائل</p>
-      </div>
-      <div class="article-arrow">←</div>
+
+    <div class="content-card">
+      <h3>📿 فضائل ذکر</h3>
+      <div class="arabic-quote">أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ</div>
+      <p>سبحان اللہ وبحمدہ پڑھنے سے گناہ معاف ہوتے ہیں اگرچہ سمندر کی جھاگ کے برابر ہوں۔ سبحان اللہ العظیم پڑھنا زبان پر ہلکا، میزان میں بھاری اور رحمٰن کو پسندیدہ ہے۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۴</div>
-      <div class="article-info">
-        <h4>فضائل درود — نبی ﷺ پر درود کی فضیلت</h4>
-        <p>درود ابراہیمی اور دیگر درودوں کے فضائل</p>
-      </div>
-      <div class="article-arrow">←</div>
+
+    <div class="content-card">
+      <h3>💝 فضائل درود</h3>
+      <div class="arabic-quote">إِنَّ اللَّهَ وَمَلَائِكَتَهُ يُصَلُّونَ عَلَى النَّبِيِّ</div>
+      <p>نبی ﷺ نے فرمایا: "جو مجھ پر ایک بار درود پڑھے اللہ اس پر دس رحمتیں نازل فرماتا ہے۔" قیامت کے دن نبی ﷺ کے سب سے قریب وہ ہوگا جس نے سب سے زیادہ درود پڑھا ہو۔</p>
     </div>
-    <div class="article-item">
-      <div class="article-num">۵</div>
-      <div class="article-info">
-        <h4>فضائل رمضان — رمضان کی برکتیں</h4>
-        <p>رمضان المبارک کے فضائل اور اس مہینے میں عبادت</p>
-      </div>
-      <div class="article-arrow">←</div>
-    </div>
-    <div class="article-item">
-      <div class="article-num">۶</div>
-      <div class="article-info">
-        <h4>فضائل صدقہ — صدقہ دینے کی فضیلت</h4>
-        <p>صدقہ، خیرات اور راہ خدا میں خرچ کرنے کے فضائل</p>
-      </div>
-      <div class="article-arrow">←</div>
+
+    <div class="content-card">
+      <h3>🌙 فضائل رمضان</h3>
+      <div class="arabic-quote">شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ</div>
+      <p>رمضان وہ مہینہ ہے جس میں قرآن نازل ہوا۔ اس میں جنت کے دروازے کھل جاتے ہیں، جہنم کے دروازے بند ہو جاتے ہیں اور شیاطین جکڑ دیے جاتے ہیں۔ لیلۃ القدر ہزار مہینوں سے بہتر ہے۔</p>
     </div>
   </div>
-  <button class="more-btn">مزید مضامین دیکھیں ←</button>
+
+  <!-- TABLIGHI BAYAN -->
+  <div id="tab-bayan" class="tab-content">
+    <div class="section-title"><span class="ar">البيانات التبليغية</span><h2>تبلیغی بیانات</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+
+    <div class="content-card">
+      <h3>📢 بیان: دین کی اہمیت</h3>
+      <p>اللہ تعالیٰ نے انسان کو صرف اپنی عبادت کے لیے پیدا کیا ہے۔ دنیا عارضی ہے، آخرت دائمی ہے۔ ہم نے اپنی زندگی دنیا کمانے میں لگا دی لیکن آخرت کی تیاری نہیں کی۔ جس طرح ہم اپنے کاروبار کے لیے محنت کرتے ہیں، اسی طرح دین کے لیے بھی وقت نکالنا ضروری ہے۔</p>
+    </div>
+
+    <div class="content-card">
+      <h3>📢 بیان: کلمے کی اہمیت</h3>
+      <p>لا الہ الا اللہ کا مطلب ہے کہ ہر چیز سے دل ہٹا کر صرف اللہ سے لگانا۔ ہم کہتے ہیں اللہ پر ایمان ہے لیکن ہر چھوٹی بات کے لیے مخلوق کی طرف دوڑتے ہیں۔ یقین کامل ہو جائے کہ نفع اور نقصان صرف اللہ کے ہاتھ میں ہے تو زندگی بدل جائے۔</p>
+    </div>
+
+    <div class="content-card">
+      <h3>📢 بیان: نماز کی ضرورت</h3>
+      <p>نماز وہ عمل ہے جو سب سے پہلے قیامت کے دن حساب میں آئے گی۔ اگر نماز ٹھیک ہوئی تو سب ٹھیک، ورنہ سب خراب۔ نماز وقت پر، باجماعت، خشوع و خضوع کے ساتھ پڑھنی چاہیے۔ نماز چھوڑنا کبیرہ گناہ ہے۔</p>
+    </div>
+  </div>
+
+  <!-- GASHT -->
+  <div id="tab-gasht" class="tab-content">
+    <div class="section-title"><span class="ar">طريقة الجولة</span><h2>گشت کا طریقہ</h2></div>
+    <div class="divider"><span class="ornament">❖</span></div>
+
+    <div class="content-card">
+      <h3>📋 گشت کی ترتیب</h3>
+      <p><strong style="color:var(--gold)">۱. نیت:</strong> صرف اللہ کی رضا کے لیے نکلنا، دنیا کی کوئی غرض نہ ہو۔<br><br>
+      <strong style="color:var(--gold)">۲. دعا:</strong> نکلنے سے پہلے دعا پڑھنا — "بسم اللہ، توکلت علی اللہ"<br><br>
+      <strong style="color:var(--gold)">۳. ادب:</strong> پرسکون انداز میں، نرم لہجے میں بات کرنا<br><br>
+      <strong style="color:var(--gold)">۴. موضوع:</strong> صرف دین کی باتیں، سیاست یا دنیاوی باتوں سے پرہیز<br><br>
+      <strong style="color:var(--gold)">۵. دعوت:</strong> مسجد آنے اور نماز پڑھنے کی دعوت دینا</p>
+    </div>
+
+    <div class="content-card">
+      <h3>🗣️ ملاقات کا طریقہ</h3>
+      <p>سلام کریں: السلام علیکم ورحمۃ اللہ وبرکاتہ<br><br>
+      حال احوال پوچھیں، پھر آہستہ آہستہ دین کی بات کریں۔ یہ نہ کہیں کہ "تم نماز نہیں پڑھتے" بلکہ کہیں کہ "نماز کے کیا فضائل ہیں"۔ مسجد میں آنے کی دعوت دیں۔</p>
+    </div>
+  </div>
 </section>
 
 <footer>
   <div class="footer-logo">☪️ نورِ اسلام</div>
   <p class="footer-tagline">اسلامی تعلیمات کی روشنی میں آپ کی رہنمائی</p>
   <div class="footer-links">
-    <a href="quran.html">قرآن پاک</a>
-    <a href="hadees.html">احادیث</a>
-    <a href="tabligh.html">تبلیغ</a>
-    <a href="fiqh.html">فقہی مسائل</a>
-    <a href="namaz.html">نماز اوقات</a>
-    <a href="names.html">اسلامی نام</a>
+    <a href="quran.html">قرآن پاک</a><a href="hadees.html">احادیث</a>
+    <a href="tabligh.html">تبلیغ</a><a href="fiqh.html">فقہی مسائل</a>
+    <a href="namaz.html">نماز اوقات</a><a href="names.html">اسلامی نام</a>
   </div>
   <div class="footer-copy">© 2026 نورِ اسلام | جملہ حقوق محفوظ ہیں</div>
 </footer>
 <script src="main.js"></script>
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0, 200);
+}
+</script>
 </body>
 </html>
