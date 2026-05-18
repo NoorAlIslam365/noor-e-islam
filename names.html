@@ -206,6 +206,10 @@ function renderNames() {
 }
 
 renderNames();
+// Also bind filter buttons explicitly
+window.addEventListener('DOMContentLoaded', function() {
+  renderNames();
+});
 </script>
 </body>
 </html>
