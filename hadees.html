@@ -207,43 +207,9 @@
 
 <script src="main.js"></script>
 <script>
-// Hadees data - curated collection since free Hadees API is limited
-const hadeesData = {
-  bukhari: [
-    { num:1, arabic:"إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ", urdu:"اعمال کا دارومدار نیتوں پر ہے اور ہر شخص کو وہی ملے گا جس کی اس نے نیت کی", rawi:"حضرت عمر بن الخطاب رضی اللہ عنہ" },
-    { num:2, arabic:"الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ", urdu:"مسلمان وہ ہے جس کی زبان اور ہاتھ سے دوسرے مسلمان محفوظ رہیں", rawi:"حضرت عبداللہ بن عمرو رضی اللہ عنہ" },
-    { num:3, arabic:"مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ", urdu:"جو شخص اللہ اور آخرت کے دن پر ایمان رکھتا ہو اسے چاہیے کہ اچھی بات کہے یا خاموش رہے", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
-    { num:4, arabic:"طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ", urdu:"علم حاصل کرنا ہر مسلمان پر فرض ہے", rawi:"حضرت انس رضی اللہ عنہ" },
-    { num:5, arabic:"الدِّينُ النَّصِيحَةُ", urdu:"دین خیرخواہی کا نام ہے", rawi:"حضرت تمیم داری رضی اللہ عنہ" },
-    { num:6, arabic:"خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ", urdu:"تم میں سب سے بہتر وہ ہے جو قرآن سیکھے اور سکھائے", rawi:"حضرت عثمان رضی اللہ عنہ" },
-    { num:7, arabic:"لَا يَدْخُلُ الْجَنَّةَ مَنْ كَانَ فِي قَلْبِهِ مِثْقَالُ ذَرَّةٍ مِنْ كِبْرٍ", urdu:"وہ شخص جنت میں نہیں جائے گا جس کے دل میں ذرہ برابر بھی تکبر ہو", rawi:"حضرت عبداللہ بن مسعود رضی اللہ عنہ" },
-    { num:8, arabic:"مَنْ غَشَّنَا فَلَيْسَ مِنَّا", urdu:"جو ہمیں دھوکہ دے وہ ہم میں سے نہیں", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
-    { num:9, arabic:"الصَّلَاةُ عِمَادُ الدِّينِ", urdu:"نماز دین کا ستون ہے", rawi:"حضرت معاذ بن جبل رضی اللہ عنہ" },
-    { num:10, arabic:"مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ", urdu:"جو شخص ایمان اور ثواب کی نیت سے رمضان کے روزے رکھے اس کے گزشتہ گناہ معاف کر دیے جاتے ہیں", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
-  ],
-  muslim: [
-    { num:1, arabic:"لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ", urdu:"تم میں سے کوئی مومن نہیں ہو سکتا جب تک اپنے بھائی کے لیے وہی پسند نہ کرے جو اپنے لیے پسند کرتا ہے", rawi:"حضرت انس رضی اللہ عنہ" },
-    { num:2, arabic:"اتَّقُوا الظُّلْمَ فَإِنَّ الظُّلْمَ ظُلُمَاتٌ يَوْمَ الْقِيَامَةِ", urdu:"ظلم سے بچو کیونکہ قیامت کے دن ظلم اندھیرے بن جائے گا", rawi:"حضرت جابر رضی اللہ عنہ" },
-    { num:3, arabic:"كُلُّ مُسْكِرٍ خَمْرٌ وَكُلُّ خَمْرٍ حَرَامٌ", urdu:"ہر نشہ آور چیز شراب ہے اور ہر شراب حرام ہے", rawi:"حضرت ابن عمر رضی اللہ عنہ" },
-    { num:4, arabic:"مَنْ مَاتَ وَهُوَ يَعْلَمُ أَنَّهُ لَا إِلَهَ إِلَّا اللَّهُ دَخَلَ الْجَنَّةَ", urdu:"جو اس حال میں مرا کہ وہ جانتا تھا کہ اللہ کے سوا کوئی معبود نہیں وہ جنت میں داخل ہوگا", rawi:"حضرت ابوذر رضی اللہ عنہ" },
-    { num:5, arabic:"الطَّهُورُ شَطْرُ الْإِيمَانِ", urdu:"طہارت آدھا ایمان ہے", rawi:"حضرت ابوملک اشعری رضی اللہ عنہ" },
-  ],
-  tirmidhi: [
-    { num:1, arabic:"اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا", urdu:"جہاں بھی ہو اللہ سے ڈرتے رہو اور برائی کے بعد نیکی کرو، وہ اسے مٹا دے گی", rawi:"حضرت ابوذر رضی اللہ عنہ" },
-    { num:2, arabic:"الرَّاحِمُونَ يَرْحَمُهُمُ الرَّحْمَنُ", urdu:"رحم کرنے والوں پر رحمٰن رحم فرماتا ہے", rawi:"حضرت عبداللہ بن عمرو رضی اللہ عنہ" },
-    { num:3, arabic:"الْمُؤْمِنُ مِرْآةُ الْمُؤْمِنِ", urdu:"مومن مومن کا آئینہ ہے", rawi:"حضرت ابوہریرہ رضی اللہ عنہ" },
-  ],
-  abudawud: [
-    { num:1, arabic:"مَنْ لَا يَرْحَمُ النَّاسَ لَا يَرْحَمُهُ اللَّهُ", urdu:"جو لوگوں پر رحم نہیں کرتا اللہ اس پر رحم نہیں کرتا", rawi:"حضرت جریر رضی اللہ عنہ" },
-    { num:2, arabic:"إِنَّ اللَّهَ يُحِبُّ إِذَا عَمِلَ أَحَدُكُمْ عَمَلًا أَنْ يُتْقِنَهُ", urdu:"اللہ تعالیٰ اسے پسند کرتا ہے کہ جب تم میں سے کوئی کام کرے تو اسے اچھی طرح کرے", rawi:"حضرت عائشہ رضی اللہ عنہا" },
-  ],
-  nasai: [
-    { num:1, arabic:"مَنْ أَحَبَّ لِقَاءَ اللَّهِ أَحَبَّ اللَّهُ لِقَاءَهُ", urdu:"جو اللہ سے ملنا پسند کرے اللہ اس سے ملنا پسند کرتا ہے", rawi:"حضرت عبادہ بن صامت رضی اللہ عنہ" },
-  ],
-  ibnmajah: [
-    { num:1, arabic:"خَيْرُ الْأَصْحَابِ عِنْدَ اللَّهِ خَيْرُهُمْ لِصَاحِبِهِ", urdu:"اللہ کے نزدیک سب سے بہتر ساتھی وہ ہے جو اپنے ساتھی کے لیے سب سے بہتر ہو", rawi:"حضرت ابن عمر رضی اللہ عنہ" },
-  ]
-};
+// ===== Live Hadees data via fawazahmed0/hadith-api (jsDelivr CDN, free, no key) =====
+const API_BASE = 'https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions';
+const PER_PAGE = 10;
 
 const bookNames = {
   bukhari: { ar:'صحيح البخاري', ur:'صحیح بخاری' },
@@ -254,33 +220,122 @@ const bookNames = {
   ibnmajah:{ ar:'سنن ابن ماجه',ur:'سنن ابن ماجہ' }
 };
 
-function openBook(key, urName, enName, total) {
+const bookCache = {};   // key -> array of {num, arabic, translation, isUrdu}
+let currentKey = null;
+let currentPage = 1;
+
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function loadBook(key) {
+  if (bookCache[key]) return bookCache[key];
+
+  const arabicUrl = `${API_BASE}/ara-${key}.min.json`;
+  let translationUrl = `${API_BASE}/urd-${key}.min.json`;
+  let isUrdu = true;
+
+  const [arabicData, translationData] = await Promise.all([
+    fetchJSON(arabicUrl),
+    fetchJSON(translationUrl).catch(async () => {
+      // Urdu edition not available for this book — fall back to English
+      isUrdu = false;
+      translationUrl = `${API_BASE}/eng-${key}.min.json`;
+      return fetchJSON(translationUrl);
+    })
+  ]);
+
+  const translationByNum = {};
+  (translationData.hadiths || []).forEach(h => { translationByNum[h.hadithnumber] = h.text; });
+
+  const combined = (arabicData.hadiths || []).map(h => ({
+    num: h.hadithnumber,
+    arabic: h.text,
+    translation: translationByNum[h.hadithnumber] || '',
+    isUrdu
+  })).filter(h => h.arabic);
+
+  bookCache[key] = combined;
+  return combined;
+}
+
+async function openBook(key) {
   document.getElementById('books-view').style.display = 'none';
   document.getElementById('book-view').style.display = 'block';
   document.getElementById('book-ar-name').textContent = bookNames[key].ar;
   document.getElementById('book-ur-name').textContent = bookNames[key].ur;
   window.scrollTo(0, 0);
 
-  const list = hadeesData[key] || [];
-  const bookKey = key;
-  const badge = bookNames[key].ur;
+  currentKey = key;
+  currentPage = 1;
 
-  document.getElementById('hadees-list').innerHTML = list.map(h => `
+  document.getElementById('hadees-list').innerHTML = `<div class="loading-box"><div class="loading-spinner"></div>احادیث لوڈ ہو رہی ہیں... (پہلی بار تھوڑا وقت لگ سکتا ہے)</div>`;
+  document.getElementById('pagination').innerHTML = '';
+
+  try {
+    await loadBook(key);
+    renderPage(1);
+  } catch (err) {
+    document.getElementById('hadees-list').innerHTML = `
+      <div class="loading-box">
+        ⚠️ احادیث لوڈ نہیں ہو سکیں۔ انٹرنیٹ کنکشن چیک کریں۔<br>
+        <button class="back-btn" style="margin-top:1rem;" onclick="openBook('${key}')">🔄 دوبارہ کوشش کریں</button>
+      </div>`;
+  }
+}
+
+function renderPage(page) {
+  const list = bookCache[currentKey] || [];
+  const badge = bookNames[currentKey].ur;
+  const totalPages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  currentPage = Math.min(Math.max(1, page), totalPages);
+
+  const start = (currentPage - 1) * PER_PAGE;
+  const pageItems = list.slice(start, start + PER_PAGE);
+
+  document.getElementById('hadees-list').innerHTML = pageItems.map(h => `
     <div class="hadees-full-card">
       <span class="hadees-number">${badge} — ${h.num}</span>
       <div class="hadees-arabic-text">${h.arabic}</div>
-      <div class="hadees-urdu-text">${h.urdu}</div>
+      <div class="hadees-urdu-text">${h.translation ? h.translation : '(ترجمہ دستیاب نہیں)'}</div>
       <div class="hadees-footer">
-        <span class="hadees-ref">${h.rawi} سے روایت</span>
+        <span class="hadees-ref">${h.isUrdu ? '' : '🔤 انگریزی ترجمہ — اردو دستیاب نہیں'}</span>
         <span class="source-badge">${badge}</span>
       </div>
-    </div>`).join('');
+    </div>`).join('') || '<div class="loading-box">اس کتاب میں احادیث نہیں ملیں</div>';
 
-  document.getElementById('pagination').innerHTML = `
-    <button class="page-btn active">۱</button>
-    <button class="page-btn">۲</button>
-    <button class="page-btn">۳</button>
-    <span style="color:rgba(253,246,227,0.4); padding:0.6rem;">... مزید جلد آ رہی ہیں</span>`;
+  document.getElementById('pagination').innerHTML = buildPaginationHTML(currentPage, totalPages, list.length);
+  document.querySelector('.main-section').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function buildPaginationHTML(page, totalPages, totalCount) {
+  const btn = (p, label, extraClass='') =>
+    `<button class="page-btn ${extraClass}" ${p===page?'disabled':''} onclick="renderPage(${p})">${label}</button>`;
+
+  let pages = [];
+  pages.push(btn(Math.max(1,page-1), '‹ پچھلا', page===1?'':''));
+
+  const windowSize = 2;
+  const nums = new Set([1, totalPages]);
+  for (let p = page-windowSize; p <= page+windowSize; p++) if (p>=1 && p<=totalPages) nums.add(p);
+  const sorted = [...nums].sort((a,b)=>a-b);
+
+  let prev = 0;
+  sorted.forEach(p => {
+    if (prev && p - prev > 1) pages.push(`<span style="color:rgba(253,246,227,0.4); padding:0.6rem;">…</span>`);
+    pages.push(`<button class="page-btn ${p===page?'active':''}" onclick="renderPage(${p})">${p}</button>`);
+    prev = p;
+  });
+
+  pages.push(btn(Math.min(totalPages,page+1), 'اگلا ›'));
+
+  return `
+    <div style="width:100%; text-align:center; color:rgba(253,246,227,0.5); font-size:0.8rem; margin-bottom:0.5rem;">
+      کل ${totalCount} احادیث — صفحہ ${page} از ${totalPages}
+    </div>
+    ${pages.join('')}`;
 }
 
 function showBooks() {
